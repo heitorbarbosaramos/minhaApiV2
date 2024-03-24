@@ -16,6 +16,25 @@ services:
     networks:
       - minha_api_v2
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    container_name: KEYCLOAK_API_V2
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: minhaApiV2
+      DB_USER: minhaApiV2
+      DB_PASSWORD: minhaApiV2
+      DB_SCHEMA: minhaapi_schema      
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8090:8080
+    depends_on:
+      - postgres
+    networks:
+      - minha_api_v2
+
 networks:
   minha_api_v2:
     driver: bridge
