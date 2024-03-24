@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: POSTGRES_API_V2
+    environment:
+      POSTGRES_DB: minhaApiV2
+      POSTGRES_USER: minhaApiV2
+      POSTGRES_PASSWORD: minhaApiV2
+    ports:
+      - "3333:5432"
+    volumes:
+      - ./:/var/lib/postgresql/dataMinhaApi
+      - ./init-schema.sql:/docker-entrypoint-initdb.d/init-schema.sql
+    networks:
+      - minha_api_v2
+
+networks:
+  minha_api_v2:
+    driver: bridge
