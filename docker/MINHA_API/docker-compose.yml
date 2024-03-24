@@ -25,7 +25,7 @@ services:
       DB_DATABASE: minhaApiV2
       DB_USER: minhaApiV2
       DB_PASSWORD: minhaApiV2
-      DB_SCHEMA: minhaapi_schema      
+      DB_SCHEMA: minhaapi_keycloack      
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
     ports:
