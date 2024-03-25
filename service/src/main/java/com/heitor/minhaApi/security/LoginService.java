@@ -1,9 +1,6 @@
 package com.heitor.minhaApi.security;
 
-import com.heitor.minhaApi.security.feignClient.KeycloakClient;
-import com.heitor.minhaApi.security.feignClient.TokenRequest;
-import com.heitor.minhaApi.security.feignClient.TokenResponse;
-import com.heitor.minhaApi.security.feignClient.UserInfoResponse;
+import com.heitor.minhaApi.security.feignClient.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +30,20 @@ public class LoginService {
         request.setPassword(loginDTO.getPassword());
 
         TokenResponse response = keycloakClient.getToken("application/x-www-form-urlencoded", request);
+
+        UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
+        return ResponseEntity.ok(userInfo);
+    }
+
+    public ResponseEntity<?> refreshToken(String refreshToken){
+
+        TokenRefreshRequest request = new TokenRefreshRequest();
+        request.setClient_id(clientId);
+        request.setClient_secret(clientSecret);
+        request.setGrant_type("refresh_token");
+        request.setRefresh_token(refreshToken);
+
+        TokenResponse response = keycloakClient.refreshToken("application/x-www-form-urlencoded", request);
 
         UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
         return ResponseEntity.ok(userInfo);

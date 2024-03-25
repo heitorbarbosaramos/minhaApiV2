@@ -9,6 +9,9 @@ public interface KeycloakClient {
     @PostMapping(value = "/realms/REALM_MINHAAPI/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
     TokenResponse getToken(@RequestHeader("Content-Type") String contentType, @RequestBody TokenRequest request);
 
+    @PostMapping(value = "/realms/REALM_MINHAAPI/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
+    TokenResponse refreshToken(@RequestHeader("Content-Type") String contentType, @RequestBody TokenRefreshRequest request);
+
     @GetMapping(value = "/realms/REALM_MINHAAPI/protocol/openid-connect/userinfo")
     UserInfoResponse getUserInfo(@RequestHeader("Authorization") String Authorization);
 
