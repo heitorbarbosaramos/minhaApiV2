@@ -3,6 +3,7 @@ package com.heitor.minhaApi.security;
 import com.heitor.minhaApi.security.feignClient.KeycloakClient;
 import com.heitor.minhaApi.security.feignClient.TokenRequest;
 import com.heitor.minhaApi.security.feignClient.TokenResponse;
+import com.heitor.minhaApi.security.feignClient.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class LoginService {
     private String grantType;
 
 
-    public ResponseEntity<TokenResponse> login(UsuarioLoginDTO loginDTO){
+    public ResponseEntity<?> login(UsuarioLoginDTO loginDTO){
 
         TokenRequest request = new TokenRequest();
         request.setClient_id(clientId);
@@ -33,6 +34,7 @@ public class LoginService {
 
         TokenResponse response = keycloakClient.getToken("application/x-www-form-urlencoded", request);
 
-        return ResponseEntity.ok(response);
+        UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
+        return ResponseEntity.ok(userInfo);
     }
 }
