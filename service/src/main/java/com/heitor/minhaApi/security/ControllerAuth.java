@@ -22,7 +22,7 @@ public class ControllerAuth {
         return ResponseEntity.ok(service.login(loginDTO));
     }
 
-    @PostMapping("/refreshToken/{refresh_token}")
+    @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestParam("refresh_token") String refreshToken){
         log.info("REQUISICAO POST PARA REALIZAR REFRESH TOKEN");
         return ResponseEntity.ok(service.refreshToken(refreshToken));

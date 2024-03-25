@@ -24,9 +24,12 @@ public class ResourcesExceptionsHandler {
         }else if(e.getMessage().contains("403")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário não tempermissão para acessar o recurso solicitado");
-        } else if (e.getMessage().contains("400")) {
+        } else if (e.getMessage().contains("400") && e.getMessage().contains("Account disabled")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário desativado");
+        } else if (e.getMessage().contains("400") && e.getMessage().contains("Invalid refresh token")) {
+                httpStatus = HttpStatus.FORBIDDEN;
+                obj.setMensagem("Token de acesso inválido");
         }else{
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             obj.setMensagem(e.getMessage());
