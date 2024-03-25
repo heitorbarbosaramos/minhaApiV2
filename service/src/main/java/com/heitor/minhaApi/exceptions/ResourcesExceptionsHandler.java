@@ -24,6 +24,9 @@ public class ResourcesExceptionsHandler {
         }else if(e.getMessage().contains("403")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário não tempermissão para acessar o recurso solicitado");
+        } else if (e.getMessage().contains("400")) {
+            httpStatus = HttpStatus.FORBIDDEN;
+            obj.setMensagem("Usuário desativado");
         }else{
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             obj.setMensagem(e.getMessage());
