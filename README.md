@@ -10,6 +10,8 @@ Este projeto utiliza:
 
 ### Tecnologias
 	* Docker
+	* Spring Boot 3.2.4
+	* Java 17
 	
 
 ### Execução
