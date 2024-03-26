@@ -33,11 +33,16 @@ public class SecurityConfig {
             "/refreshToken"
     };
 
+    private static final String[] PUBLIC_MATCHERS_GET = {
+            "/actuator/info"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll();
+                    auth.requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())));
