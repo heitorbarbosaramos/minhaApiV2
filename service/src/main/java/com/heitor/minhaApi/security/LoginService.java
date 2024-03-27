@@ -32,7 +32,11 @@ public class LoginService {
         TokenResponse response = keycloakClient.getToken("application/x-www-form-urlencoded", request);
 
         UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
-        return ResponseEntity.ok(userInfo);
+
+        UserIntrospectResponse responserUser = userIntrospectResponse(response.getAccess_token());
+
+
+        return ResponseEntity.ok(responserUser);
     }
 
     public ResponseEntity<?> refreshToken(String refreshToken){
@@ -47,5 +51,17 @@ public class LoginService {
 
         UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
         return ResponseEntity.ok(userInfo);
+    }
+
+    public UserIntrospectResponse userIntrospectResponse(String token){
+
+        UserIntrospectRequest requestUser = new UserIntrospectRequest();
+        requestUser.setClient_id(clientId);
+        requestUser.setClient_secret(clientSecret);
+        requestUser.setToken(token);
+
+        UserIntrospectResponse responserUser = keycloakClient.getUserIntrospect("application/x-www-form-urlencoded", requestUser);
+
+        return responserUser;
     }
 }

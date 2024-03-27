@@ -15,4 +15,6 @@ public interface KeycloakClient {
     @GetMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/userinfo")
     UserInfoResponse getUserInfo(@RequestHeader("Authorization") String Authorization);
 
+    @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token/introspect", consumes = "application/x-www-form-urlencoded")
+    UserIntrospectResponse getUserIntrospect(@RequestHeader("Content-Type") String contentType, @RequestBody UserIntrospectRequest request);
 }

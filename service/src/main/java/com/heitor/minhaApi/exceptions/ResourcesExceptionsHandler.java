@@ -1,6 +1,7 @@
 package com.heitor.minhaApi.exceptions;
 
 import feign.FeignException;
+import feign.codec.DecodeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,24 @@ public class ResourcesExceptionsHandler {
         obj.setIdStatus(httpStatus.value());
         obj.setCausa(httpStatus.toString());
 
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(DecodeException.class)
+    public ResponseEntity<MensagemPadrao> decodeException(DecodeException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
         obj.setPath(request.getContextPath() + request.getServletPath());
         obj.setData(LocalDateTime.now());
 
