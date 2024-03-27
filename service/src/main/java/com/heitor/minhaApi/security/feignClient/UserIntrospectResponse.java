@@ -9,9 +9,10 @@ public class UserIntrospectResponse {
 
     private long exp;
     private long iat;
+    private long auth_time;
     private String jti;
     private String iss;
-    private String aud;
+//    private String aud;
     private String sub;
     private String typ;
     private String azp;
