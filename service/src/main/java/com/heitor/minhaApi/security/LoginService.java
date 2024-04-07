@@ -1,6 +1,8 @@
 package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private final KeycloakClient keycloakClient;
+    private final CookiesUtils cookiesUtils;
 
     @Value("${keycloak.client.id}")
     private String clientId;
@@ -20,20 +23,23 @@ public class LoginService {
     private String grantType;
 
 
-    public ResponseEntity<?> login(UsuarioLoginDTO loginDTO){
+    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, UsuarioLoginDTO loginDTO){
 
-        TokenRequest request = new TokenRequest();
-        request.setClient_id(clientId);
-        request.setClient_secret(clientSecret);
-        request.setGrant_type(grantType);
-        request.setUsername(loginDTO.getUsername());
-        request.setPassword(loginDTO.getPassword());
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setClient_id(clientId);
+        tokenRequest.setClient_secret(clientSecret);
+        tokenRequest.setGrant_type(grantType);
+        tokenRequest.setUsername(loginDTO.getUsername());
+        tokenRequest.setPassword(loginDTO.getPassword());
 
-        TokenResponse response = keycloakClient.getToken("application/x-www-form-urlencoded", request);
+        TokenResponse tokenResponse = keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
 
-        UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
+        UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + tokenResponse.getAccess_token());
 
-        UserIntrospectResponse responserUser = userIntrospectResponse(response.getAccess_token());
+        UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
+
+        cookiesUtils.createCookieToken(request, response, tokenResponse.getAccess_token());
+        cookiesUtils.createCookiePerfil(request, response, responserUser.getRealm_access().getRoles());
 
 
         return ResponseEntity.ok(responserUser);

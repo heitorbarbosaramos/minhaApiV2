@@ -1,5 +1,7 @@
 package com.heitor.minhaApi.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +19,9 @@ public class ControllerAuth {
     private final LoginService service;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO){
+    public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA REALIZAR LOGIN");
-        return ResponseEntity.ok(service.login(loginDTO));
+        return ResponseEntity.ok(service.login(request, response, loginDTO));
     }
 
     @PostMapping("/refreshToken")
