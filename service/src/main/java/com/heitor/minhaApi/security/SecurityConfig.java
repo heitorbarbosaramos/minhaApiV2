@@ -29,8 +29,8 @@ public class SecurityConfig {
     @Value("${keycloak.client.server.url}")
     private String keycloakSereverUrl;
     private static final String[] PUBLIC_MATCHERS_POST = {
-            "/login",
-            "/refreshToken"
+            "/user/login",
+            "/user/refreshToken"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {

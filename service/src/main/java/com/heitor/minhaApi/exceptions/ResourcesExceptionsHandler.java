@@ -28,6 +28,9 @@ public class ResourcesExceptionsHandler {
         } else if (e.getMessage().contains("400") && e.getMessage().contains("Account disabled")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário desativado");
+        } else if (e.getMessage().contains("409")) {
+            httpStatus = HttpStatus.CONFLICT;
+            obj.setMensagem("Já existe um usuário com o mesmo nome de usuário");
         } else if (e.getMessage().contains("400") && e.getMessage().contains("Invalid refresh token")) {
                 httpStatus = HttpStatus.FORBIDDEN;
                 obj.setMensagem("Token de acesso inválido");

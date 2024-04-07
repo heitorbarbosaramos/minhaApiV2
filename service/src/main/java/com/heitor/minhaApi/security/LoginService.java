@@ -70,4 +70,9 @@ public class LoginService {
 
         return responserUser;
     }
+
+    public void createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+        String token = request.getHeader("Authorization");
+        keycloakClient.createUser(token, user);
+    }
 }
