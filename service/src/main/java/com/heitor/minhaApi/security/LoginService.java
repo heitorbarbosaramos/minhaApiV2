@@ -39,6 +39,7 @@ public class LoginService {
         UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
 
         cookiesUtils.createCookieToken(request, response, tokenResponse.getAccess_token());
+        cookiesUtils.createCookieTokenRefresh(request, response, tokenResponse.getRefresh_token());
         cookiesUtils.createCookiePerfil(request, response, responserUser.getRealm_access().getRoles());
 
 

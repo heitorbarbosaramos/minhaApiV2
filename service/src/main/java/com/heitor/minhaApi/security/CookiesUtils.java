@@ -15,6 +15,8 @@ public class CookiesUtils {
 
     @Value("${cookies.name.token}")
     private String cookieNameToken;
+    @Value("${cookies.name.token.refresh}")
+    private String cookieNameTokenRefresh;
     @Value("${cookies.name.perfis}")
     private String perfisName;
     @Value("${cookies.domain}")
@@ -38,6 +40,14 @@ public class CookiesUtils {
         String perfis = String.join("-", roles);
 
         Cookie cookie = new Cookie(perfisName, perfis);
+        cookie.setPath(cookiePath);
+        cookie.setHttpOnly(Boolean.FALSE);
+        cookie.setDomain(cookieDomain);
+        response.addCookie(cookie);
+    }
+
+    public void createCookieTokenRefresh(HttpServletRequest request, HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie(cookieNameTokenRefresh, refreshToken);
         cookie.setPath(cookiePath);
         cookie.setHttpOnly(Boolean.FALSE);
         cookie.setDomain(cookieDomain);
