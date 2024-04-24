@@ -32,8 +32,11 @@ public class ResourcesExceptionsHandler {
             httpStatus = HttpStatus.CONFLICT;
             obj.setMensagem("Já existe um usuário com o mesmo nome de usuário");
         } else if (e.getMessage().contains("400") && e.getMessage().contains("Invalid refresh token")) {
-                httpStatus = HttpStatus.FORBIDDEN;
-                obj.setMensagem("Token de acesso inválido");
+            httpStatus = HttpStatus.FORBIDDEN;
+            obj.setMensagem("Token de acesso inválido");
+        } else if (e.getMessage().contains("404") && e.getMessage().contains("updateUser")) {
+            httpStatus = HttpStatus.NOT_FOUND;
+            obj.setMensagem("Usuário não localizado");
         }else{
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             obj.setMensagem(e.getMessage());
