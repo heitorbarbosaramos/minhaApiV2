@@ -20,5 +20,5 @@ public interface KeycloakClient {
     UserIntrospectResponse getUserIntrospect(@RequestHeader("Content-Type") String contentType, @RequestBody UserIntrospectRequest request);
 
     @PostMapping(value = "/admin/realms/${keycloak.client.realm}/users", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Object createUser(@RequestHeader("Authorization") String authorization, @RequestBody UserRepresentarioKeyCloak user);
+    void createUser(@RequestHeader("Authorization") String authorization, @RequestBody UserRepresentarioKeyCloak user);
 }
