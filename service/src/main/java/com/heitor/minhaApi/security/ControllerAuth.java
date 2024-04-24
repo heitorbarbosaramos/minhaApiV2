@@ -37,4 +37,11 @@ public class ControllerAuth {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable("userId") String userId,@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO PUT PARA ATUALIZAR USUARIO");
+        service.updateUser(userId, user, request, response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

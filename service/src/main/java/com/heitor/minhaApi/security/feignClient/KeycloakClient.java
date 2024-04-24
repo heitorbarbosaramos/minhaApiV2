@@ -21,4 +21,11 @@ public interface KeycloakClient {
 
     @PostMapping(value = "/admin/realms/${keycloak.client.realm}/users", consumes = MediaType.APPLICATION_JSON_VALUE)
     void createUser(@RequestHeader("Authorization") String authorization, @RequestBody UserRepresentarioKeyCloak user);
+
+    @PutMapping(value = "/admin/realms/${keycloak.client.realm}/users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void updateUser(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("userId") String userId,
+            @RequestBody UserRepresentarioKeyCloak user
+    );
 }

@@ -76,4 +76,9 @@ public class LoginService {
         String token = request.getHeader("Authorization");
         keycloakClient.createUser(token, user);
     }
+
+    public void updateUser(String userId, UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+        String token = request.getHeader("Authorization");
+        keycloakClient.updateUser(token, userId, user);
+    }
 }
