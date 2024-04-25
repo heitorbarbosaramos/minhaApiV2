@@ -74,9 +74,10 @@ public class LoginService {
         return responserUser;
     }
 
-    public void createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+    public UserRepresentarioKeyCloak createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         String token = request.getHeader("Authorization");
         keycloakClient.createUser(token, user);
+        return keycloakClient.findByUserName(token, user.getUsername()).stream().findFirst().get();
     }
 
     public List<UserRepresentarioKeyCloak> findByUserName(String userName, HttpServletRequest request, HttpServletResponse response){

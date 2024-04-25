@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -33,10 +35,11 @@ public class ControllerAuth {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<UserRepresentarioKeyCloak> createUser(@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA CRIAR USUARIO LOGIN");
-        service.createUser(user, request, response);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        UserRepresentarioKeyCloak retorno = service.createUser(user, request, response);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(retorno.getId()).toUri();
+        return ResponseEntity.created(uri).body(retorno);
     }
 
     @GetMapping("/findAll")
