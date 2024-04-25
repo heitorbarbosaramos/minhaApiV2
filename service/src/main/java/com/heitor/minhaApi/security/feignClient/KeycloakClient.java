@@ -48,4 +48,7 @@ public interface KeycloakClient {
 
     @PostMapping(value = "/admin/realms/${keycloak.client.realm}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
     void createRoleKeycloak(@RequestHeader("Authorization") String authorizationHeader, @RequestBody RolesRepresentationKeycloak role);
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/groups", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<GroupKeycloakRepresentation> groupsKeycloak(@RequestHeader("Authorization") String authorizationHeader);
 }
