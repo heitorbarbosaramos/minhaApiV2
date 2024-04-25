@@ -4,6 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @FeignClient(name = "keycloakClient", url = "http://localhost:8090/auth")
 public interface KeycloakClient {
 
@@ -28,4 +30,7 @@ public interface KeycloakClient {
             @PathVariable("userId") String userId,
             @RequestBody UserRepresentarioKeyCloak user
     );
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<UserRepresentarioKeyCloak> findAllUser(@RequestHeader("Authorization") String authorizationHeader);
 }

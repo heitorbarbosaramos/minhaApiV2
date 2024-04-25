@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -75,6 +77,11 @@ public class LoginService {
     public void createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         String token = request.getHeader("Authorization");
         keycloakClient.createUser(token, user);
+    }
+
+    public List<UserRepresentarioKeyCloak> findAllUser(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getHeader("Authorization");
+        return keycloakClient.findAllUser(token);
     }
 
     public void updateUser(String userId, UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){

@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -35,6 +37,12 @@ public class ControllerAuth {
         log.info("REQUISICAO POST PARA CRIAR USUARIO LOGIN");
         service.createUser(user, request, response);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<UserRepresentarioKeyCloak>> findAllUser(HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUIISICAO GET PARA RECUPERAR TODOS OS USUARIO KEYCLOAK");
+        return ResponseEntity.ok(service.findAllUser(request,response));
     }
 
     @PutMapping("/update/{userId}")
