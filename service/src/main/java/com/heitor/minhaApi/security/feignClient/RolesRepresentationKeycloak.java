@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,4 +19,5 @@ public class RolesRepresentationKeycloak {
     private String composite;
     private String clientRole;
     private String containerId;
+    private Map<String, String> attributes;
 }
