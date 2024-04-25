@@ -30,6 +30,12 @@ public class ControllerRoles {
         return ResponseEntity.ok(service.findByName(roleName, request, response));
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<RolesRepresentationKeycloak> create(@RequestBody RolesRepresentationKeycloak role, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO POST PARA CRIAR ROLE KEYCLOAK");
+        return ResponseEntity.ok(service.createRole(role, request, response));
+    }
+
     @PutMapping("/update/{roleName}")
     public ResponseEntity<RolesRepresentationKeycloak> update(@PathVariable("roleName") String roleName, @RequestBody RolesRepresentationKeycloak role, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO PUT PARA ATUALIZAR ROLE KEYCLOAK");

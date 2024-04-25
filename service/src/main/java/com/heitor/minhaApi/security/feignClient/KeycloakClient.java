@@ -45,4 +45,7 @@ public interface KeycloakClient {
 
     @PutMapping(value = "/admin/realms/${keycloak.client.realm}/roles/{roleName}", consumes = MediaType.APPLICATION_JSON_VALUE)
     void updateRoleKeycloak(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("roleName") String roleName, @RequestBody RolesRepresentationKeycloak role);
+
+    @PostMapping(value = "/admin/realms/${keycloak.client.realm}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void createRoleKeycloak(@RequestHeader("Authorization") String authorizationHeader, @RequestBody RolesRepresentationKeycloak role);
 }

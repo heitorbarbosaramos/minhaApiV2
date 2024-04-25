@@ -31,4 +31,10 @@ public class RolesKeycloakService {
         keycloakClient.updateRoleKeycloak(token, roleName, role);
         return findByName(roleName, request, response);
     }
+
+    public RolesRepresentationKeycloak createRole(RolesRepresentationKeycloak role, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.createRoleKeycloak(token, role);
+        return findByName(role.getName(), request, response);
+    }
 }
