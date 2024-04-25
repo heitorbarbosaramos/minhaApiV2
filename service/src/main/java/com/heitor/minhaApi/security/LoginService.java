@@ -1,6 +1,7 @@
 package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.*;
+import com.heitor.minhaApi.security.utils.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -75,23 +76,23 @@ public class LoginService {
     }
 
     public UserRepresentarioKeyCloak createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
-        String token = request.getHeader("Authorization");
+        String token = TokenUtils.RetrieveToken(request);
         keycloakClient.createUser(token, user);
         return keycloakClient.findByUserName(token, user.getUsername()).stream().findFirst().get();
     }
 
     public List<UserRepresentarioKeyCloak> findByUserName(String userName, HttpServletRequest request, HttpServletResponse response){
-        String token = request.getHeader("Authorization");
+        String token = TokenUtils.RetrieveToken(request);
         return keycloakClient.findByUserName(token, userName);
     }
 
     public List<UserRepresentarioKeyCloak> findAllUser(HttpServletRequest request, HttpServletResponse response){
-        String token = request.getHeader("Authorization");
+        String token = TokenUtils.RetrieveToken(request);
         return keycloakClient.findAllUser(token);
     }
 
     public void updateUser(String userId, UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
-        String token = request.getHeader("Authorization");
+        String token = TokenUtils.RetrieveToken(request);
         keycloakClient.updateUser(token, userId, user);
     }
 }
