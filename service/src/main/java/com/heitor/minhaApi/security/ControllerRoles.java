@@ -6,10 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +28,11 @@ public class ControllerRoles {
     public ResponseEntity<RolesRepresentationKeycloak> findByName(@PathVariable("roleName") String roleName, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO GET PARA RECUPERAR ROLE KEYCLOAK PELO NOME");
         return ResponseEntity.ok(service.findByName(roleName, request, response));
+    }
+
+    @PutMapping("/update/{roleName}")
+    public ResponseEntity<RolesRepresentationKeycloak> update(@PathVariable("roleName") String roleName, @RequestBody RolesRepresentationKeycloak role, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO PUT PARA ATUALIZAR ROLE KEYCLOAK");
+        return ResponseEntity.ok(service.updateRole(roleName, role, request, response));
     }
 }

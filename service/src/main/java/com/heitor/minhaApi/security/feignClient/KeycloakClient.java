@@ -38,8 +38,11 @@ public interface KeycloakClient {
     List<UserRepresentarioKeyCloak> findAllUser(@RequestHeader("Authorization") String authorizationHeader);
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<RolesRepresentationKeycloak> rolesKeycloak(@RequestHeader("Authorization") String autthorizationHeader);
+    List<RolesRepresentationKeycloak> rolesKeycloak(@RequestHeader("Authorization") String authorizationHeader);
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/roles/{roleName}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    RolesRepresentationKeycloak findByName(@RequestHeader("Authorization") String autthorizationHeader, @PathVariable("roleName") String roleName);
+    RolesRepresentationKeycloak findByName(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("roleName") String roleName);
+
+    @PutMapping(value = "/admin/realms/${keycloak.client.realm}/roles/{roleName}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void updateRoleKeycloak(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("roleName") String roleName, @RequestBody RolesRepresentationKeycloak role);
 }
