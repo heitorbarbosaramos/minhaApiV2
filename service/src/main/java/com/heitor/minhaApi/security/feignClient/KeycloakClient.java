@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @FeignClient(name = "keycloakClient", url = "${keycloak.client.server}")
 public interface KeycloakClient {
@@ -51,4 +52,7 @@ public interface KeycloakClient {
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/groups", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<GroupKeycloakRepresentation> groupsKeycloak(@RequestHeader("Authorization") String authorizationHeader);
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/groups/{idGroup}/members?first={first}&max={max}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<UserRepresentarioKeyCloak> membersGroup(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idGroup") String idGroup, @PathVariable("first") Integer first, @PathVariable("max") Integer max);
 }

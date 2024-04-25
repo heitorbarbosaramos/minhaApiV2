@@ -2,6 +2,7 @@ package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.GroupKeycloakRepresentation;
 import com.heitor.minhaApi.security.feignClient.KeycloakClient;
+import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import com.heitor.minhaApi.security.utils.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +20,11 @@ public class GroupsKeycloakService {
     public List<GroupKeycloakRepresentation> findAll(HttpServletRequest request, HttpServletResponse response){
         String token = TokenUtils.RetrieveToken(request);
         return keycloakClient.groupsKeycloak(token);
+    }
+
+    public List<UserRepresentarioKeyCloak> findAllMembersByGroup(String idGroup, Integer first, Integer max, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        return keycloakClient.membersGroup(token, idGroup, first, max);
     }
 
 
