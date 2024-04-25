@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +25,11 @@ public class ControllerRoles {
     public ResponseEntity<List<RolesRepresentationKeycloak>> findAll(HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO GET PARA RECUPERAR TODAS AS ROLES DO KEYCLOAK");
         return ResponseEntity.ok(service.findAll(request, response));
+    }
+
+    @GetMapping("/findByName/{roleName}")
+    public ResponseEntity<RolesRepresentationKeycloak> findByName(@PathVariable("roleName") String roleName, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO GET PARA RECUPERAR ROLE KEYCLOAK PELO NOME");
+        return ResponseEntity.ok(service.findByName(roleName, request, response));
     }
 }

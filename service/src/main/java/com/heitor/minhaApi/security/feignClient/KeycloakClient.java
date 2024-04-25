@@ -39,4 +39,7 @@ public interface KeycloakClient {
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<RolesRepresentationKeycloak> rolesKeycloak(@RequestHeader("Authorization") String autthorizationHeader);
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/roles/{roleName}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    RolesRepresentationKeycloak findByName(@RequestHeader("Authorization") String autthorizationHeader, @PathVariable("roleName") String roleName);
 }
