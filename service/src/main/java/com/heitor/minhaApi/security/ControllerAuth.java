@@ -45,6 +45,12 @@ public class ControllerAuth {
         return ResponseEntity.ok(service.findAllUser(request,response));
     }
 
+    @GetMapping("/findByUserName/{userName}")
+    public ResponseEntity<List<UserRepresentarioKeyCloak>> findByUserName(@PathVariable("userName") String userName, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUIISICAO GET PARA RECUPERAR USUARIO PELO USERNAME KEYCLOAK");
+        return ResponseEntity.ok(service.findByUserName(userName, request,response));
+    }
+
     @PutMapping("/update/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable("userId") String userId,@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO PUT PARA ATUALIZAR USUARIO");

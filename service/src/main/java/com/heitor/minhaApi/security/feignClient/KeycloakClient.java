@@ -31,6 +31,9 @@ public interface KeycloakClient {
             @RequestBody UserRepresentarioKeyCloak user
     );
 
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users?username={userName}")
+    List<UserRepresentarioKeyCloak> findByUserName(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("userName") String userName);
+
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<UserRepresentarioKeyCloak> findAllUser(@RequestHeader("Authorization") String authorizationHeader);
 }

@@ -79,6 +79,11 @@ public class LoginService {
         keycloakClient.createUser(token, user);
     }
 
+    public List<UserRepresentarioKeyCloak> findByUserName(String userName, HttpServletRequest request, HttpServletResponse response){
+        String token = request.getHeader("Authorization");
+        return keycloakClient.findByUserName(token, userName);
+    }
+
     public List<UserRepresentarioKeyCloak> findAllUser(HttpServletRequest request, HttpServletResponse response){
         String token = request.getHeader("Authorization");
         return keycloakClient.findAllUser(token);
