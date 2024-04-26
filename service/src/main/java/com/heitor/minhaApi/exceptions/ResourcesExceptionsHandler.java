@@ -21,7 +21,7 @@ public class ResourcesExceptionsHandler {
 
         if(e.getMessage().contains("401")){
             httpStatus = HttpStatus.UNAUTHORIZED;
-            obj.setMensagem("Usuário ou senha estão errados ou usuário não exite");
+            obj.setMensagem("Usuário ou senha estão errados ou usuário não existe");
         }else if(e.getMessage().contains("403")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário não tempermissão para acessar o recurso solicitado");
