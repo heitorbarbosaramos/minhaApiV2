@@ -54,6 +54,12 @@ public class GroupsKeycloakService {
         return groupRoles(idGroup, request, response);
     }
 
+    public List<UserRepresentarioKeyCloak> editGroupAddUser(String idUser, String idGroup, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.editGroupAddUser(token, idUser, idGroup);
+        return findAllMembersByGroup(idGroup, 0, 10, request, response);
+    }
+
 
 
 }

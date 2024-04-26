@@ -73,4 +73,13 @@ public class ControllerGroups {
         log.info("REQUISICAO POST PARA ADCIONAR ROLES A UM GRUPO");
         return ResponseEntity.ok(service.editGroupRemoveRoles(roles, idGroup, request, response));
     }
+
+    @PutMapping("/editGroupAddUsuario/{idGroup}/{idUser}")
+    public ResponseEntity<List<UserRepresentarioKeyCloak>> editGroupAddUser(
+            @PathVariable("idUser") String idUser,
+            @PathVariable("idGroup") String idGroup,
+            HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO PUT PARA ADCIONAR USUARIO AO GRUPO");
+        return ResponseEntity.ok(service.editGroupAddUser(idUser, idGroup, request, response));
+    }
 }
