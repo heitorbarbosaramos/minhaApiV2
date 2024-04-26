@@ -62,11 +62,10 @@ public class ControllerGroups {
     }
 
     @PostMapping("/editGroupAddRoles/{idGroup}")
-    public ResponseEntity<Void> editGroupAddRoles(@RequestBody List<RolesRepresentationKeycloak> roles,
+    public ResponseEntity<GroupRolesKeycloakRepresentation> editGroupAddRoles(@RequestBody List<RolesRepresentationKeycloak> roles,
                                                   @PathVariable("idGroup") String idGroup,
                                                   HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA ADCIONAR ROLES A UM GRUPO");
-        service.editGroupAddRoles(roles, idGroup, request, response);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.editGroupAddRoles(roles, idGroup, request, response));
     }
 }

@@ -42,9 +42,10 @@ public class GroupsKeycloakService {
         return keycloakClient.editGroupFindRoles(token, idGroup, first, max);
     }
 
-    public void editGroupAddRoles(List<RolesRepresentationKeycloak> roles, String idGroup, HttpServletRequest request, HttpServletResponse response){
+    public GroupRolesKeycloakRepresentation editGroupAddRoles(List<RolesRepresentationKeycloak> roles, String idGroup, HttpServletRequest request, HttpServletResponse response){
         String token = TokenUtils.RetrieveToken(request);
         keycloakClient.editGroupAddRoles(token,idGroup, roles);
+        return groupRoles(idGroup, request, response);
     }
 
 
