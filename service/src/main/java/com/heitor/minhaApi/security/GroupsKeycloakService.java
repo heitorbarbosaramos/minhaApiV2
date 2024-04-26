@@ -1,9 +1,6 @@
 package com.heitor.minhaApi.security;
 
-import com.heitor.minhaApi.security.feignClient.GroupKeycloakRepresentation;
-import com.heitor.minhaApi.security.feignClient.GroupRolesKeycloakRepresentation;
-import com.heitor.minhaApi.security.feignClient.KeycloakClient;
-import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import com.heitor.minhaApi.security.feignClient.*;
 import com.heitor.minhaApi.security.utils.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +34,19 @@ public class GroupsKeycloakService {
         String token = TokenUtils.RetrieveToken(request);
         return keycloakClient.groupsRoles(token, idGroup);
     }
+
+    public List<RolesRepresentationKeycloak> editGroupFindRoles(
+            String idGroup, Integer first, Integer max,
+            HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        return keycloakClient.editGroupFindRoles(token, idGroup, first, max);
+    }
+
+    public void editGroupAddRoles(List<RolesRepresentationKeycloak> roles, String idGroup, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.editGroupAddRoles(token,idGroup, roles);
+    }
+
 
 
 }

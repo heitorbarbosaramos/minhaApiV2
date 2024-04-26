@@ -37,6 +37,9 @@ public class ResourcesExceptionsHandler {
         } else if (e.getMessage().contains("404") && e.getMessage().contains("updateUser")) {
             httpStatus = HttpStatus.NOT_FOUND;
             obj.setMensagem("Usuário não localizado");
+        } else if (e.getMessage().contains("404") && e.getMessage().contains("Could not find group by id")) {
+                httpStatus = HttpStatus.NOT_FOUND;
+                obj.setMensagem("Não foi possível localizar o grupo por id");
         }else{
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             obj.setMensagem(e.getMessage());

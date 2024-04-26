@@ -2,6 +2,7 @@ package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.GroupKeycloakRepresentation;
 import com.heitor.minhaApi.security.feignClient.GroupRolesKeycloakRepresentation;
+import com.heitor.minhaApi.security.feignClient.RolesRepresentationKeycloak;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -48,5 +49,24 @@ public class ControllerGroups {
             HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO GET PARA RECUPERAR TODOS OS GROUPS KEYCLOAK");
         return ResponseEntity.ok(service.findAllMembersByGroup(idGroup, first, max, request, response));
+    }
+
+    @GetMapping("/editGroupFindRoles/{idGroup}")
+    public ResponseEntity<List<RolesRepresentationKeycloak>> editGroupFindRoles(
+            @PathVariable("idGroup") String idGroup,
+            @RequestParam(value = "first", defaultValue = "0") Integer first,
+            @RequestParam(value = "max", defaultValue = "10") Integer max,
+            HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO GET PARA RECUPERAR LISTA DE ROLES PARA ADICIONAR A UM GRUPO DE USUARIOS");
+        return ResponseEntity.ok(service.editGroupFindRoles(idGroup, first, max, request, response));
+    }
+
+    @PostMapping("/editGroupAddRoles/{idGroup}")
+    public ResponseEntity<Void> editGroupAddRoles(@RequestBody List<RolesRepresentationKeycloak> roles,
+                                                  @PathVariable("idGroup") String idGroup,
+                                                  HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO POST PARA ADCIONAR ROLES A UM GRUPO");
+        service.editGroupAddRoles(roles, idGroup, request, response);
+        return ResponseEntity.noContent().build();
     }
 }

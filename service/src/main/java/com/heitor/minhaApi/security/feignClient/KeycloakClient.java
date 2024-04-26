@@ -60,4 +60,10 @@ public interface KeycloakClient {
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/groups/{idGroup}", consumes = MediaType.APPLICATION_JSON_VALUE)
     GroupRolesKeycloakRepresentation groupsRoles(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idGroup") String idGroup);
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/groups/{idGroup}/role-mappings/realm/available?first={first}&max={max}")
+    List<RolesRepresentationKeycloak> editGroupFindRoles (@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idGroup") String idGroup, @PathVariable("first") Integer first, @PathVariable("max") Integer max);
+
+    @PostMapping(value = "/admin/realms/${keycloak.client.realm}/groups/{idGroup}/role-mappings/realm")
+    void editGroupAddRoles(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idGroup") String idGroup, @RequestBody List<RolesRepresentationKeycloak> roles);
 }
