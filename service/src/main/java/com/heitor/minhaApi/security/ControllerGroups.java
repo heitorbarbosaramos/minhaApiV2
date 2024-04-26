@@ -1,9 +1,6 @@
 package com.heitor.minhaApi.security;
 
-import com.heitor.minhaApi.security.feignClient.GroupKeycloakRepresentation;
-import com.heitor.minhaApi.security.feignClient.GroupRolesKeycloakRepresentation;
-import com.heitor.minhaApi.security.feignClient.RolesRepresentationKeycloak;
-import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import com.heitor.minhaApi.security.feignClient.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +64,13 @@ public class ControllerGroups {
                                                   HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA ADCIONAR ROLES A UM GRUPO");
         return ResponseEntity.ok(service.editGroupAddRoles(roles, idGroup, request, response));
+    }
+
+    @DeleteMapping("/editGroupRemoveRoles/{idGroup}")
+    public ResponseEntity<GroupRolesKeycloakRepresentation> editGroupRemoveRoles(@RequestBody List<DeleteGroupRole> roles,
+                                                                              @PathVariable("idGroup") String idGroup,
+                                                                              HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO POST PARA ADCIONAR ROLES A UM GRUPO");
+        return ResponseEntity.ok(service.editGroupRemoveRoles(roles, idGroup, request, response));
     }
 }

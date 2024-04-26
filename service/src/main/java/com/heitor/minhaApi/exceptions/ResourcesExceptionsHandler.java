@@ -21,10 +21,10 @@ public class ResourcesExceptionsHandler {
 
         if(e.getMessage().contains("401")){
             httpStatus = HttpStatus.UNAUTHORIZED;
-            obj.setMensagem("Usuário ou senha estão errados ou usuário não existe");
+            obj.setMensagem("Usuário ou senha estão errados ou usuário não existe, ou a sessão expirou");
         }else if(e.getMessage().contains("403")) {
             httpStatus = HttpStatus.FORBIDDEN;
-            obj.setMensagem("Usuário não tempermissão para acessar o recurso solicitado");
+            obj.setMensagem("Usuário não tem permissão para acessar o recurso solicitado");
         } else if (e.getMessage().contains("400") && e.getMessage().contains("Account disabled")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Usuário desativado");

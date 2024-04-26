@@ -48,6 +48,12 @@ public class GroupsKeycloakService {
         return groupRoles(idGroup, request, response);
     }
 
+    public GroupRolesKeycloakRepresentation editGroupRemoveRoles(List<DeleteGroupRole> roles, String idGroup, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.editGroupRemoveRoles(token,idGroup, roles);
+        return groupRoles(idGroup, request, response);
+    }
+
 
 
 }
