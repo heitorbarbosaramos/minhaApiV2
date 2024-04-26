@@ -60,6 +60,12 @@ public class GroupsKeycloakService {
         return findAllMembersByGroup(idGroup, 0, 10, request, response);
     }
 
+    public List<UserRepresentarioKeyCloak> editGroupRemoveUser(String idUser, String idGroup, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.editGroupRemoveUser(token, idUser, idGroup);
+        return findAllMembersByGroup(idGroup, 0, 10, request, response);
+    }
+
 
 
 }

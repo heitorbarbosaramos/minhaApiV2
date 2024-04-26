@@ -82,4 +82,13 @@ public class ControllerGroups {
         log.info("REQUISICAO PUT PARA ADCIONAR USUARIO AO GRUPO");
         return ResponseEntity.ok(service.editGroupAddUser(idUser, idGroup, request, response));
     }
+
+    @DeleteMapping("/editGroupRemoveUsuario/{idGroup}/{idUser}")
+    public ResponseEntity<List<UserRepresentarioKeyCloak>> editGroupRemoveUser(
+            @PathVariable("idUser") String idUser,
+            @PathVariable("idGroup") String idGroup,
+            HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO DELETE PARA REMOVER USUARIO DO GRUPO");
+        return ResponseEntity.ok(service.editGroupRemoveUser(idUser, idGroup, request, response));
+    }
 }

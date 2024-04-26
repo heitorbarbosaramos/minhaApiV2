@@ -72,4 +72,7 @@ public interface KeycloakClient {
 
     @PutMapping(value = "/admin/realms/${keycloak.client.realm}/users/{idUser}/groups/{idGroup}")
     void editGroupAddUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idUser") String idUser, @PathVariable("idGroup") String idGroup);
+
+    @DeleteMapping(value = "/admin/realms/${keycloak.client.realm}/users/{idUser}/groups/{idGroup}")
+    void editGroupRemoveUser(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idUser") String idUser, @PathVariable("idGroup") String idGroup);
 }
