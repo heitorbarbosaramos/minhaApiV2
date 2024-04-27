@@ -1,6 +1,8 @@
 package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -23,18 +25,27 @@ public class ControllerAuth {
     private final LoginService service;
 
     @PostMapping("/login")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar login através de um usuário e senha",
+            description = "Requisição POST para Realizar login através de um usuário e senha", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA REALIZAR LOGIN");
         return ResponseEntity.ok(service.login(request, response, loginDTO));
     }
 
     @PostMapping("/refreshToken")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar o refresh Token",
+            description = "Requisição POST para Realizar o refresh Token", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<?> refreshToken(@RequestParam("refresh_token") String refreshToken){
         log.info("REQUISICAO POST PARA REALIZAR REFRESH TOKEN");
         return ResponseEntity.ok(service.refreshToken(refreshToken));
     }
 
     @PostMapping("/create")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar a criação de um usuário",
+            description = "Requisição POST para Realizar a criação de um usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<UserRepresentarioKeyCloak> createUser(@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA CRIAR USUARIO LOGIN");
         UserRepresentarioKeyCloak retorno = service.createUser(user, request, response);
@@ -43,18 +54,27 @@ public class ControllerAuth {
     }
 
     @GetMapping("/findAll")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar a recuperação de todos os usuário",
+            description = "Requisição GET para Realizar a recuperação de todos os usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<List<UserRepresentarioKeyCloak>> findAllUser(HttpServletRequest request, HttpServletResponse response){
         log.info("REQUIISICAO GET PARA RECUPERAR TODOS OS USUARIO KEYCLOAK");
         return ResponseEntity.ok(service.findAllUser(request,response));
     }
 
     @GetMapping("/findByUserName/{userName}")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar a recuperação de um usuário pelo nome de usuário",
+            description = "Requisição GET para Realizar a recuperação de um usuário pelo nome de usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<List<UserRepresentarioKeyCloak>> findByUserName(@PathVariable("userName") String userName, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUIISICAO GET PARA RECUPERAR USUARIO PELO USERNAME KEYCLOAK");
         return ResponseEntity.ok(service.findByUserName(userName, request,response));
     }
 
     @PutMapping("/update/{userId}")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar a atualização de um usuário",
+            description = "Requisição PUT para Realizar a atualização de um usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
     public ResponseEntity<?> updateUser(@PathVariable("userId") String userId,@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO PUT PARA ATUALIZAR USUARIO");
         service.updateUser(userId, user, request, response);

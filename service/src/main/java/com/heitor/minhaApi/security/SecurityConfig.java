@@ -34,7 +34,9 @@ public class SecurityConfig {
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-            "/actuator/info"
+            "/actuator/info",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     @Bean
