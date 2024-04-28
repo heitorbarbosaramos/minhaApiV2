@@ -1,0 +1,1 @@
+ALTER TABLE minhaapi_service.tb_usuario ADD codigo_confirmacao varchar(6) NULL;

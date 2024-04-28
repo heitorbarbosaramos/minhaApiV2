@@ -34,6 +34,9 @@ public class Usuario {
     @Column(name = "RECUPERA_SENHA")
     private Long timestampRecuperaSenha;
 
+    @Column(name = "CODIGO_CONFIRMACAO")
+    private String codigoConfirmacao;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private UsuarioStatus status;
