@@ -5,9 +5,11 @@ import feign.codec.DecodeException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -59,6 +61,60 @@ public class ResourcesExceptionsHandler {
 
     @ExceptionHandler(DecodeException.class)
     public ResponseEntity<MensagemPadrao> decodeException(DecodeException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<MensagemPadrao> SQLException(SQLException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<MensagemPadrao> illegalArgumentException(IllegalArgumentException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity<MensagemPadrao> mailException(MailException e, HttpServletRequest request){
 
         MensagemPadrao obj = new MensagemPadrao();
 

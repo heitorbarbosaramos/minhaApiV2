@@ -30,13 +30,16 @@ public class SecurityConfig {
     private String keycloakSereverUrl;
     private static final String[] PUBLIC_MATCHERS_POST = {
             "/user/login",
-            "/user/refreshToken"
+            "/user/refreshToken",
+            "/usuario/create/step1",
+            "/usuario/create/step3"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/actuator/info",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/usuario/create/step2/**"
     };
 
     @Bean

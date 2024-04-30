@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:remove="all">Order Confirmation</title>
+    <meta charset=\"utf-8\"> <!-- utf-8 works for most cases -->
+    <meta name=\"viewport\" content=\"width=device-width\"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name=\"x-apple-disable-message-reformatting\">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
+
+</head>
+
+<body class="bg-red-100">
+
+<div class="container">
+    <div class="row h-100 justify-content-center align-items-center">
+        <img class="my-6 w-16" height="50" width="50" src="https://assets.bootstrapemail.com/logos/light/square.png" />
+    </div>
+    <div class="space-y-4 mb-6">
+        <h1 class="text-4xl fw-800 text-center" th:text="${nomeSistema}">NOME SISTEMA</h1>
+    </div>
+    <div class="card rounded-3xl px-4 py-8 p-lg-10 mb-6">
+        <h3 class="text-center">Ativação de conta</h3>
+        <p class="text-center text-muted">Você está ativando uma nova conta, esse é o passo 1 de 3.</p>
+
+        <p th:utext="${corpo}"> CORPO</p>
+    </div>
+</div>
+
+</body>
+</html>

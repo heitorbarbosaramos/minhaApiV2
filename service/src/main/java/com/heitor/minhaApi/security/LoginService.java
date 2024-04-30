@@ -24,7 +24,26 @@ public class LoginService {
     private String clientSecret;
     @Value("${keycloak.client.grantype}")
     private String grantType;
+    @Value("${keycloak.client.realm}")
+    private String realm;
+    @Value("${keycloak.client.adminUsuario}")
+    private String userAdminKeycloak;
+    @Value("${keycloak.client.adminSenha}")
+    private String userAdminKeycloakPassword;
 
+    private TokenResponse tokenResponse(TokenRequest tokenRequest){
+        return keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
+    }
+
+    private TokenAdminResponse getTokenAdmin(){
+
+        TokenRequest tokenRequest = new TokenRequest();
+        tokenRequest.setClient_id(clientId);
+        tokenRequest.setClient_secret(clientSecret);
+        tokenRequest.setGrant_type("client_credentials");
+
+        return keycloakClient.getTokenAdmin("application/x-www-form-urlencoded",tokenRequest);
+    }
 
     public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, UsuarioLoginDTO loginDTO){
 
@@ -35,16 +54,13 @@ public class LoginService {
         tokenRequest.setUsername(loginDTO.getUsername());
         tokenRequest.setPassword(loginDTO.getPassword());
 
-        TokenResponse tokenResponse = keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
-
-        UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + tokenResponse.getAccess_token());
+        TokenResponse tokenResponse = tokenResponse(tokenRequest);
 
         UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
 
         cookiesUtils.createCookieToken(request, response, tokenResponse.getAccess_token());
         cookiesUtils.createCookieTokenRefresh(request, response, tokenResponse.getRefresh_token());
         cookiesUtils.createCookiePerfil(request, response, responserUser.getRealm_access().getRoles());
-
 
         return ResponseEntity.ok(responserUser);
     }
@@ -77,6 +93,17 @@ public class LoginService {
 
     public UserRepresentarioKeyCloak createUser(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         String token = TokenUtils.RetrieveToken(request);
+        if(token == null){
+            TokenRequest tokenRequest = new TokenRequest();
+            tokenRequest.setClient_id(clientId);
+            tokenRequest.setClient_secret(clientSecret);
+            tokenRequest.setGrant_type(grantType);
+            tokenRequest.setUsername(userAdminKeycloak);
+            tokenRequest.setPassword(userAdminKeycloakPassword);
+
+            TokenResponse tokenResponse = tokenResponse(tokenRequest);
+            token = "Bearer " + tokenResponse.getAccess_token();
+        }
         keycloakClient.createUser(token, user);
         return keycloakClient.findByUserName(token, user.getUsername()).stream().findFirst().get();
     }

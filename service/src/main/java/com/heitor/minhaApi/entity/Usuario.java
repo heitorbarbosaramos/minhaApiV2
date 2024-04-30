@@ -4,6 +4,7 @@ import com.heitor.minhaApi.enums.UsuarioStatus;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,14 @@ public class Usuario {
 
     @Column(name = "ID_USUARIO_KEYCLOAK")
     private UUID idUsuarioKeycloak;
+
+    @NotEmpty(message = "Campo Obrigatório")
+    @Column(name = "NOME")
+    private String nome;
+
+    @NotEmpty(message = "Campo Obrigatório")
+    @Column(name = "SOBRE_NOME")
+    private String sobreNome;
 
     @Column(name = "TELEFONE", unique = true)
     private String telefone;

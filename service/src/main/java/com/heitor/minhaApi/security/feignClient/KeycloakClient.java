@@ -10,6 +10,9 @@ import java.util.List;
 public interface KeycloakClient {
 
     @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
+    TokenAdminResponse getTokenAdmin(@RequestHeader("Content-Type") String contentType, @RequestBody TokenRequest request);
+
+    @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
     TokenResponse getToken(@RequestHeader("Content-Type") String contentType, @RequestBody TokenRequest request);
 
     @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
