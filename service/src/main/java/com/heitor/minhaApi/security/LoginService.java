@@ -148,4 +148,22 @@ public class LoginService {
         }
         keycloakClient.resetPassWord(token, userId, rest);
     }
+
+    public List<UserSessionRepresentation> findSessionsByUsers(String userId, HttpServletRequest request, HttpServletResponse response ){
+        String token = TokenUtils.RetrieveToken(request);
+        UserInfoResponse userInfo = keycloakClient.getUserInfo(token);
+
+        if(Objects.equals(userInfo.getSub(), userId)){
+            TokenRequest tokenRequest = new TokenRequest();
+            tokenRequest.setClient_id(clientId);
+            tokenRequest.setClient_secret(clientSecret);
+            tokenRequest.setGrant_type(grantType);
+            tokenRequest.setUsername(userAdminKeycloak);
+            tokenRequest.setPassword(userAdminKeycloakPassword);
+
+            TokenResponse tokenResponse = tokenResponse(tokenRequest);
+            token = "Bearer " + tokenResponse.getAccess_token();
+        }
+        return keycloakClient.sessions(token, userId);
+    }
 }

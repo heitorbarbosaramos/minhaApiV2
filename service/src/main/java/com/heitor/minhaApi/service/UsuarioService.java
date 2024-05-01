@@ -8,6 +8,7 @@ import com.heitor.minhaApi.security.UsuarioLoginDTO;
 import com.heitor.minhaApi.security.feignClient.TokenAdminResponse;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import com.heitor.minhaApi.service.utils.CorpoEmail;
+import com.heitor.minhaApi.service.utils.DataHoraUtils;
 import com.heitor.minhaApi.service.utils.EmailSenderService;
 import com.heitor.minhaApi.service.utils.StringUtils;
 import jakarta.servlet.http.Cookie;
@@ -70,8 +71,7 @@ public class UsuarioService {
 
     public UserRepresentarioKeyCloak createStep2(String timeStamp, String codigoConfirmacao, String confirmadoVia){
 
-        Instant instant = Instant.ofEpochMilli(Long.parseLong(timeStamp));
-        LocalDateTime dataTimeStamp = LocalDateTime.ofInstant(instant, ZoneId.of("UTC"));
+        LocalDateTime dataTimeStamp = DataHoraUtils.convertDataTimeFromTimeStampUTC(timeStamp);
 
         Long timeStampLong = Long.parseLong(timeStamp);
 

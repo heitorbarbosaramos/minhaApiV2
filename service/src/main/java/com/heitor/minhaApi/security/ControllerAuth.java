@@ -2,6 +2,7 @@ package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import com.heitor.minhaApi.security.feignClient.UserResetSenha;
+import com.heitor.minhaApi.security.feignClient.UserSessionRepresentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -97,6 +98,15 @@ public class ControllerAuth {
         log.info("REQUISICAO PATCH PARA RESETAR SENHA");
         service.resetSenha(userId, rest, request, response);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/sessions/{userId}")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar busca nas sessions do usuário",
+            description = "Requisição PUT para busca nas sessions do usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<List<UserSessionRepresentation>> findSessiosByUser(@PathVariable("userId") String userId, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO GET PARA BUSCAR SESSIONS ABERTA DO USUÁRIO");
+        return ResponseEntity.ok(service.findSessionsByUsers(userId, request, response));
     }
 
 }
