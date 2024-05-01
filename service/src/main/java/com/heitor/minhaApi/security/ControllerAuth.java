@@ -1,6 +1,7 @@
 package com.heitor.minhaApi.security;
 
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import com.heitor.minhaApi.security.feignClient.UserResetSenha;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,6 +80,18 @@ public class ControllerAuth {
         log.info("REQUISICAO PUT PARA ATUALIZAR USUARIO");
         service.updateUser(userId, user, request, response);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/resetPassword/{userId}")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar reset senha de um usuário",
+            description = "Requisição PUT para Realizar reset senha de um usuário", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<Void> resetPassWord(
+            @PathVariable("userId") String userId,
+            @RequestBody UserResetSenha rest, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO PATCH PARA RESETAR SENHA");
+        service.resetSenha(userId, rest, request, response);
+        return ResponseEntity.ok().build();
     }
 
 }

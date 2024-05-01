@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -58,9 +60,15 @@ public class LoginService {
 
         UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
 
+        List<String > roles = new ArrayList<>();
+
+        if(responserUser.getRealm_access() != null){
+            roles.addAll(responserUser.getRealm_access().getRoles());
+        }
+
         cookiesUtils.createCookieToken(request, response, tokenResponse.getAccess_token());
         cookiesUtils.createCookieTokenRefresh(request, response, tokenResponse.getRefresh_token());
-        cookiesUtils.createCookiePerfil(request, response, responserUser.getRealm_access().getRoles());
+        cookiesUtils.createCookiePerfil(request, response, roles);
 
         return ResponseEntity.ok(responserUser);
     }
@@ -121,5 +129,23 @@ public class LoginService {
     public void updateUser(String userId, UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
         String token = TokenUtils.RetrieveToken(request);
         keycloakClient.updateUser(token, userId, user);
+    }
+
+    public void resetSenha(String userId, UserResetSenha rest, HttpServletRequest request, HttpServletResponse response ){
+        String token = TokenUtils.RetrieveToken(request);
+        UserInfoResponse userInfo = keycloakClient.getUserInfo(token);
+
+        if(Objects.equals(userInfo.getSub(), userId)){
+            TokenRequest tokenRequest = new TokenRequest();
+            tokenRequest.setClient_id(clientId);
+            tokenRequest.setClient_secret(clientSecret);
+            tokenRequest.setGrant_type(grantType);
+            tokenRequest.setUsername(userAdminKeycloak);
+            tokenRequest.setPassword(userAdminKeycloakPassword);
+
+            TokenResponse tokenResponse = tokenResponse(tokenRequest);
+            token = "Bearer " + tokenResponse.getAccess_token();
+        }
+        keycloakClient.resetPassWord(token, userId, rest);
     }
 }

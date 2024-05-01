@@ -34,6 +34,13 @@ public interface KeycloakClient {
             @RequestBody UserRepresentarioKeyCloak user
     );
 
+    @PutMapping(value = "/admin/realms/${keycloak.client.realm}/users/{userId}/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void resetPassWord(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("userId") String userId,
+            @RequestBody UserResetSenha reset
+    );
+
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users?username={userName}")
     List<UserRepresentarioKeyCloak> findByUserName(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("userName") String userName);
 
