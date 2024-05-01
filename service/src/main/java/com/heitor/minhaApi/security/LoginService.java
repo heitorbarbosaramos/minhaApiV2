@@ -121,9 +121,9 @@ public class LoginService {
         return keycloakClient.findByUserName(token, userName);
     }
 
-    public List<UserRepresentarioKeyCloak> findAllUser(HttpServletRequest request, HttpServletResponse response){
+    public List<UserRepresentarioKeyCloak> findAllUser(String briefRepresentation, Integer first, Integer max, HttpServletRequest request, HttpServletResponse response){
         String token = TokenUtils.RetrieveToken(request);
-        return keycloakClient.findAllUser(token);
+        return keycloakClient.findAllUser(token, briefRepresentation, first, max);
     }
 
     public void updateUser(String userId, UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){

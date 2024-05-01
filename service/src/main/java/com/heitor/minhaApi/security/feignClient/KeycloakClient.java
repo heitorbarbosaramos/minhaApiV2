@@ -44,8 +44,13 @@ public interface KeycloakClient {
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users?username={userName}")
     List<UserRepresentarioKeyCloak> findByUserName(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("userName") String userName);
 
-    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<UserRepresentarioKeyCloak> findAllUser(@RequestHeader("Authorization") String authorizationHeader);
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users?briefRepresentation={briefRepresentation}&first={first}&max={max}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<UserRepresentarioKeyCloak> findAllUser(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @PathVariable("briefRepresentation") String briefRepresentation,
+            @PathVariable("first") Integer first,
+            @PathVariable("max") Integer max
+    );
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/roles", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<RolesRepresentationKeycloak> rolesKeycloak(@RequestHeader("Authorization") String authorizationHeader);

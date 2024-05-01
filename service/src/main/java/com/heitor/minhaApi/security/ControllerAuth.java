@@ -58,9 +58,14 @@ public class ControllerAuth {
     @Operation(tags = {"Autenticacao"}, summary = "Realizar a recuperação de todos os usuário",
             description = "Requisição GET para Realizar a recuperação de todos os usuário", security = {@SecurityRequirement(name = "Bearer")}
     )
-    public ResponseEntity<List<UserRepresentarioKeyCloak>> findAllUser(HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<List<UserRepresentarioKeyCloak>> findAllUser(
+            @RequestParam(value = "briefRepresentation", defaultValue = "true") String briefRepresentation,
+            @RequestParam(value = "first", defaultValue = "0") Integer first,
+            @RequestParam(value = "max", defaultValue = "10") Integer max,
+            HttpServletRequest request,
+            HttpServletResponse response){
         log.info("REQUIISICAO GET PARA RECUPERAR TODOS OS USUARIO KEYCLOAK");
-        return ResponseEntity.ok(service.findAllUser(request,response));
+        return ResponseEntity.ok(service.findAllUser(briefRepresentation, first, max,  request,response));
     }
 
     @GetMapping("/findByUserName/{userName}")
