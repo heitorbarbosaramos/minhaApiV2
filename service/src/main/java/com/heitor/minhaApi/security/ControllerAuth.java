@@ -109,4 +109,12 @@ public class ControllerAuth {
         return ResponseEntity.ok(service.findSessionsByUsers(userId, request, response));
     }
 
+    @DeleteMapping("/deleteSession/{idSessiona}")
+    public ResponseEntity<Void> deleteSession(@PathVariable("idSessiona") String idSession, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO DELETE PARA DELETAR UMA SESSION DO USUARIO");
+        service.deleteSession(idSession, request, response);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

@@ -166,4 +166,23 @@ public class LoginService {
         }
         return keycloakClient.sessions(token, userId);
     }
+
+    public void deleteSession(String idSession, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+
+        UserIntrospectResponse userIntrospectResponse = userIntrospectResponse(token.substring(7, token.length()));
+
+        if(!userIntrospectResponse.getRealm_access().getRoles().contains("ADMINISTRADORES")){
+            TokenRequest tokenRequest = new TokenRequest();
+            tokenRequest.setClient_id(clientId);
+            tokenRequest.setClient_secret(clientSecret);
+            tokenRequest.setGrant_type(grantType);
+            tokenRequest.setUsername(userAdminKeycloak);
+            tokenRequest.setPassword(userAdminKeycloakPassword);
+
+            TokenResponse tokenResponse = tokenResponse(tokenRequest);
+            token = "Bearer " + tokenResponse.getAccess_token();
+        }
+        keycloakClient.deleteSession(token, idSession);
+    }
 }

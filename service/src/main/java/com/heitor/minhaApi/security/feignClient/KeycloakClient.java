@@ -93,4 +93,7 @@ public interface KeycloakClient {
 
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/users/{idUser}/sessions")
     List<UserSessionRepresentation> sessions(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idUser") String idUser);
+
+    @DeleteMapping(value = "/admin/realms/${keycloak.client.realm}/sessions/{idSession}")
+    void deleteSession(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idSession") String idSession);
 }
