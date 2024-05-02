@@ -3,9 +3,13 @@ package com.heitor.minhaApi.exceptions;
 import feign.FeignException;
 import feign.codec.DecodeException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -125,6 +129,46 @@ public class ResourcesExceptionsHandler {
         obj.setMensagem(e.getMessage());
         obj.setPath(request.getContextPath() + request.getServletPath());
         obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrosLista> validation(MethodArgumentNotValidException e, HttpServletRequest request){
+
+        ErrosLista obj = new ErrosLista();
+
+        obj.setIdStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        obj.setCausa(HttpStatus.UNPROCESSABLE_ENTITY.toString());
+        obj.setMensagem("Erro de validação");
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        for(FieldError x : e.getBindingResult().getFieldErrors()){
+            obj.getErros().add(new ErrosCampos(x.getField(), x.getDefaultMessage()));
+        }
+        e.printStackTrace();
+        return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(obj);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<MensagemPadrao> constrainViolation(ConstraintViolationException e, HttpServletRequest request){
+
+        HttpStatus httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+
+
+        ErrosLista obj = new ErrosLista();
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem("Erro de validação.");
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        for(ConstraintViolation error : e.getConstraintViolations()){
+            obj.getErros().add(new ErrosCampos(error.getPropertyPath().toString(), error.getMessage() ));
+        }
 
         e.printStackTrace();
 
