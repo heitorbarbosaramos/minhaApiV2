@@ -37,14 +37,19 @@ public class SecurityConfig {
             "/user/login",
             "/user/refreshToken",
             "/usuario/create/step1",
-            "/usuario/create/step3"
+            "/usuario/create/step4"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/actuator/info",
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/usuario/create/step2/**"
+            "/usuario/create/step2/**",
+            "/usuario/create/step3/*/*/*",
+    };
+
+    public static final String [] PUBLIC_MATCHERS_PUT = {
+        "/usuario/create/step5/*/*/*"
     };
 
     @Bean
@@ -54,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll();
                     auth.requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll();
+                    auth.requestMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())));
