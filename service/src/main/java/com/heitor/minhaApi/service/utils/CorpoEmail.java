@@ -26,4 +26,24 @@ public class CorpoEmail {
 
         return corpoEmail;
     }
+
+    public static String removeUerTimeOutCreate(String nome, String email, LocalDateTime timeOut, String linkUserCreate){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
+
+        String corpoEmail = "Prezado(a) " + nome;
+        corpoEmail += "<br><br>";
+        corpoEmail += "A solicitação de criação de conta utilizando o " + email +" foi expirada em " + timeOut.format(formatter);
+        corpoEmail += "<br><br>";
+        corpoEmail += "O processo de criação de uma nova conta pode ser realizada novamente no link abaixo";
+        corpoEmail += "<div class=\"row h-100 justify-content-center align-items-center jumbotron\">\n";
+        corpoEmail += "   <p><a class=\"btn btn-primary btn-lg\" href='"+linkUserCreate+"' role=\"button\">CRIAR CONTA </a></p>";
+        corpoEmail += "</div>";
+        corpoEmail += "<br><br>";
+        corpoEmail += "<div class=\"well\">Caso o botão não funcione utilize o link: "+linkUserCreate+"</div>";
+        corpoEmail += "<br><br>";
+        corpoEmail += "<br><br>";
+
+        return corpoEmail;
+    }
 }

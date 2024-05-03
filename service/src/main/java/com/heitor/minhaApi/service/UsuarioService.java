@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.time.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -53,6 +54,10 @@ public class UsuarioService {
             usuario.setEndereco(enderecoService.save(usuario.getEndereco()));
         }
         return repository.save(usuario);
+    }
+
+    public Usuario findByIdLocal(Long idLocal){
+        return repository.findById(idLocal).orElseThrow(() -> new NoSuchElementException("Usuário não localizado"));
     }
 
     public Usuario findByEmail(String email){
@@ -156,6 +161,20 @@ public class UsuarioService {
         Usuario usuario = findByCodConfirmacaoTimeStamp(Long.parseLong(timeStamp), codigoConfirmacao, UsuarioStatus.valueOf(ativado));
         loginService.resetSenha(usuario.getIdUsuarioKeycloak().toString(), rest, request, response);
         response.sendRedirect(bucketFront);
+    }
+
+    public List<Usuario> findTimeOutCreateUser(){
+        Long timeOut = DataHoraUtils.criarTimeStampDataHoraAtual(-timeOutCreteUser);
+        return repository.findByUserTimoutCreat(timeOut);
+    }
+
+    public void deteleUser(Long idUsuarioLocal){
+        Usuario usuario = findByIdLocal(idUsuarioLocal);
+        if(usuario.getIdUsuarioKeycloak() == null){
+            repository.delete(usuario);
+        }else {
+            throw new IllegalArgumentException("Usuário já tem login cadastrado, não pode ser excluido");
+        }
     }
 
     private Usuario findByCodConfirmacaoTimeStamp(Long timeStamp, String codigoConfirmacao, UsuarioStatus status){
