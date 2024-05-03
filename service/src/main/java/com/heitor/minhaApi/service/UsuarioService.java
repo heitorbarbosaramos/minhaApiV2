@@ -5,8 +5,10 @@ import com.heitor.minhaApi.enums.UsuarioStatus;
 import com.heitor.minhaApi.repostirory.UsuarioRepository;
 import com.heitor.minhaApi.security.LoginService;
 import com.heitor.minhaApi.security.UsuarioLoginDTO;
+import com.heitor.minhaApi.security.dto.UsuarioCreateDTO;
 import com.heitor.minhaApi.security.feignClient.TokenAdminResponse;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import com.heitor.minhaApi.security.feignClient.UserResetSenha;
 import com.heitor.minhaApi.service.utils.CorpoEmail;
 import com.heitor.minhaApi.service.utils.DataHoraUtils;
 import com.heitor.minhaApi.service.utils.EmailSenderService;
@@ -20,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.*;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +39,8 @@ public class UsuarioService {
 
     @Value("${bucket.front.url}")
     private String bucketFront;
+    @Value("${bucket.front.url.resetPassword}")
+    private String bucketFrontResetPassword;
     @Value("${cookies.name.token}")
     private String tokenName;
 
@@ -52,10 +57,15 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void createStep1(Usuario usuario){
+    public void createStep1(UsuarioCreateDTO dto){
 
-        LocalDateTime dataLimite = LocalDateTime.now().plusMinutes(30);
-        long timestamp = dataLimite.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+        long timestamp = DataHoraUtils.criarTimeStampDataHoraAtual(30);
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
+        usuario.setSobreNome(dto.getSobreNome());
+        usuario.setTelefone(dto.getTelefone());
+        usuario.setEmail(dto.getEmail());
 
         usuario.setCodigoConfirmacao(StringUtils.geradorCaracteresNumericos(5));
         usuario.setTimestampRecuperaSenha(timestamp);
@@ -65,21 +75,20 @@ public class UsuarioService {
         
         String linkStep1 = bucketFront + "/ativar/" + timestamp + "/" + usuario.getCodigoConfirmacao();
 
-        String corpoEmail = CorpoEmail.criarConta(usuario.getNome(), usuario.getEmail(), dataLimite, usuario.getCodigoConfirmacao(), linkStep1);
+        String corpoEmail = CorpoEmail.criarConta(usuario.getNome(),
+                    usuario.getEmail(),
+                    LocalDateTime.now().plusMinutes(30),
+                    usuario.getCodigoConfirmacao(), linkStep1);
         emailService.enviaEmail(usuario.getEmail(), "Criação de Conta STEP 1", corpoEmail);
     }
 
-    public UserRepresentarioKeyCloak createStep2(String timeStamp, String codigoConfirmacao, String confirmadoVia){
+    public void createStep2(String timeStamp, String codigoConfirmacao, String confirmadoVia, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         LocalDateTime dataTimeStamp = DataHoraUtils.convertDataTimeFromTimeStampUTC(timeStamp);
 
         Long timeStampLong = Long.parseLong(timeStamp);
 
-        Usuario usuario = findByCodConfirmacaoTimeStamp(timeStampLong, codigoConfirmacao);
-
-        if(usuario == null){
-            throw new IllegalArgumentException("Não existe um usuário atrelado a esse link de ativação");
-        }
+        Usuario usuario = findByCodConfirmacaoTimeStamp(timeStampLong, codigoConfirmacao, UsuarioStatus.ATIVACAO);
 
         switch (confirmadoVia){
             case "email":
@@ -93,6 +102,9 @@ public class UsuarioService {
 
         }
 
+        usuario.setTimestampRecuperaSenha(DataHoraUtils.criarTimeStampDataHoraAtual(30));
+        usuario.setCodigoConfirmacao(StringUtils.geradorCaracteresNumericos(5));
+
         usuario = save(usuario);
 
         if(dataTimeStamp.isBefore(LocalDateTime.now())){
@@ -100,34 +112,54 @@ public class UsuarioService {
             throw new IllegalArgumentException("A ativação foi cancelada pois o link de ativação execedeu o tempo limite.");
         }
 
+        response.sendRedirect(bucketFront+"/step3"+"?tr="+usuario.getTimestampRecuperaSenha()+"&cf="+usuario.getCodigoConfirmacao()+"&ativado="+ usuario.getStatus().name());
+    }
+
+    public UserRepresentarioKeyCloak creatStep3(Long timeStamp, String codigoConfirmacao, String ativado){
+
+        Usuario usuario = findByCodConfirmacaoTimeStamp(timeStamp, codigoConfirmacao, UsuarioStatus.valueOf(ativado));
+
         UserRepresentarioKeyCloak user = new UserRepresentarioKeyCloak();
         user.setFirstName(usuario.getNome());
         user.setLastName(usuario.getSobreNome());
         user.setEmail(usuario.getEmail());
+        user.getRealmRoles().add("USUARIO");
         user.setEmailVerified(true);
         user.setEnabled(true);
         user.setUsername(usuario.getEmail().substring(0, usuario.getEmail().indexOf("@")));
 
         return user;
+
+
     }
 
-    public UserRepresentarioKeyCloak createStep3(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+    public void createStep4(UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Usuario usuario = findByEmail(user.getEmail());
 
-        findByCodConfirmacaoTimeStamp(usuario.getTimestampRecuperaSenha(), usuario.getCodigoConfirmacao());
+        findByCodConfirmacaoTimeStamp(usuario.getTimestampRecuperaSenha(), usuario.getCodigoConfirmacao(), usuario.getStatus());
 
         user = loginService.createUser(user, request, response);
 
         usuario.setIdUsuarioKeycloak(UUID.fromString(user.getId()));
-        usuario.setTimestampRecuperaSenha(null);
-        usuario.setCodigoConfirmacao(null);
+        usuario.setTimestampRecuperaSenha(DataHoraUtils.criarTimeStampDataHoraAtual(30));
+        usuario.setCodigoConfirmacao(StringUtils.geradorCaracteresNumericos(5));
         save(usuario);
 
-        return user;
+        response.sendRedirect(bucketFront+bucketFrontResetPassword+"?tr="+usuario.getTimestampRecuperaSenha()+"&cf="+usuario.getCodigoConfirmacao()+"&ativado="+ usuario.getStatus().name());
     }
 
-    private Usuario findByCodConfirmacaoTimeStamp(Long timeStamp, String codigoConfirmacao){
-        return repository.findByTimestampRecuperaSenhaAndCodigoConfirmacaoAndStatus(timeStamp, codigoConfirmacao, UsuarioStatus.ATIVACAO);
+    public void createStep5(String timeStamp, UserResetSenha rest, String codigoConfirmacao, String ativado, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Usuario usuario = findByCodConfirmacaoTimeStamp(Long.parseLong(timeStamp), codigoConfirmacao, UsuarioStatus.valueOf(ativado));
+        loginService.resetSenha(usuario.getIdUsuarioKeycloak().toString(), rest, request, response);
+        response.sendRedirect(bucketFront);
+    }
+
+    private Usuario findByCodConfirmacaoTimeStamp(Long timeStamp, String codigoConfirmacao, UsuarioStatus status){
+        Usuario usuario = repository.findByTimestampRecuperaSenhaAndCodigoConfirmacaoAndStatus(timeStamp, codigoConfirmacao, status);
+        if(usuario == null){
+            throw new IllegalArgumentException("Não existe um usuário atrelado a esse link de ativação");
+        }
+        return usuario;
     }
 }

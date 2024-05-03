@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class UserRepresentarioKeyCloak {
     private Set<String> disableableCredentialTypes;
     private List<String> requiredActions;
 //    protected List<FederatedIdentityRepresentation> federatedIdentities;
-    private List<String> realmRoles;
+    private List<String> realmRoles = new ArrayList<>();
     private Map<String, List<String>> clientRoles;
 //    protected List<UserConsentRepresentation> clientConsents;
     private Integer notBefore;

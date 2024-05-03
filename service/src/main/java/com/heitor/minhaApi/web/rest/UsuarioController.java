@@ -1,8 +1,8 @@
 package com.heitor.minhaApi.web.rest;
 
-import com.heitor.minhaApi.entity.Usuario;
-import com.heitor.minhaApi.security.feignClient.TokenAdminResponse;
+import com.heitor.minhaApi.security.dto.UsuarioCreateDTO;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
+import com.heitor.minhaApi.security.feignClient.UserResetSenha;
 import com.heitor.minhaApi.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,12 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -30,32 +28,61 @@ public class UsuarioController {
     @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 1",
             description = "Requisicao para Criar Usuario Step 1", security = {@SecurityRequirement(name = "Bearer")}
     )
-    public ResponseEntity<?> usuarioCreateStep1(@RequestBody @Valid Usuario usuario){
+    public ResponseEntity<?> usuarioCreateStep1(@RequestBody @Valid UsuarioCreateDTO usuario){
         log.info("REQUISICAO POST PARA CRIAR USUÁRIO STEP 1");
         service.createStep1(usuario);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Foi enviado um email para "+usuario.getEmail()+" para continuar o processo de cadastro");
     }
 
     @GetMapping("/create/step2/{timeStamp}/{codigoConfirmacao}/{confirmadoVia}")
     @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 2",
-            description = "Requisicao para Criar Usuario Step 2 - Confirmando timeStamp e codigo de confirmacao", security = {@SecurityRequirement(name = "Bearer")}
+            description = "Requisicao para Criar Usuario Step 2 - Confirmando timeStamp e codigo de confirmacao", security = {}
     )
-    public ResponseEntity<UserRepresentarioKeyCloak> usuarioCreateStep2(
+    public ResponseEntity<Void> usuarioCreateStep2(
             @PathVariable("timeStamp") String timeStamp,
             @PathVariable("codigoConfirmacao") String codigoConfirmacao,
-            @PathVariable(value = "confirmadoVia", required = true) String confirmadoVia){
+            @PathVariable(value = "confirmadoVia", required = true) String confirmadoVia,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("REQUISICAO GET PARA CRIAR USUÁRIO STEP 2");
-        return ResponseEntity.ok(service.createStep2(timeStamp, codigoConfirmacao, confirmadoVia));
+        service.createStep2(timeStamp, codigoConfirmacao, confirmadoVia, request, response);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/create/step3")
+    @GetMapping("/create/step3/{timeStamp}/{codigoConfirmacao}/{ativado}")
     @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 3",
-            description = "Requisicao para Criar Usuario Step 3 - Finalizando Cadastro", security = {@SecurityRequirement(name = "Bearer")}
+            description = "Requisicao para Criar Usuario Step 3 - Recuperando dados para o formulario", security = {}
     )
-    public ResponseEntity<UserRepresentarioKeyCloak> usuarioCreateStep3(@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<UserRepresentarioKeyCloak> usuarioCreateStep3(
+            @PathVariable("timeStamp") Long timeStamp,
+            @PathVariable("codigoConfirmacao") String codigoConfirmacao,
+            @PathVariable("ativado") String ativado
+    ){
         log.info("REQUISICAO GET PARA CRIAR USUÁRIO STEP 3");
-        user = service.createStep3(user, request, response);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(user);
+        return ResponseEntity.ok(service.creatStep3(timeStamp, codigoConfirmacao, ativado));
     }
+
+    @PostMapping("/create/step4")
+    @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 4",
+            description = "Requisicao para Criar Usuario Step 4 - Finalizando Cadastro", security = {}
+    )
+    public void usuarioCreateStep4(@RequestBody UserRepresentarioKeyCloak user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("REQUISICAO GET PARA CRIAR USUÁRIO STEP 4");
+        service.createStep4(user, request, response);
+    }
+
+    @PutMapping("/create/step5/{timeStamp}/{codigoConfirmacao}/{ativado}")
+    @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 5",
+            description = "Requisicao para Criar Usuario Step 5 - Cadastrar senha", security = {}
+    )
+    public void usuarioCreatStep5(
+            @RequestBody UserResetSenha rest,
+            @PathVariable("timeStamp") String timeStamp,
+            @PathVariable("codigoConfirmacao") String codigoConfirmacao,
+            @PathVariable("ativado") String ativado,
+            HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("REQUISICAO PUT PARA CRIAR USUARIO STEP 5");
+        service.createStep5(timeStamp, rest, codigoConfirmacao, ativado, request, response);
+    }
+
+
 }
