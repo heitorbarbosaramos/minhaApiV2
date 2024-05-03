@@ -10,7 +10,7 @@ public class CorpoEmail {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
 
-        String corpoEmail = "Prezado " + nome;
+        String corpoEmail = "Prezado(a) " + nome;
         corpoEmail += "<br><br>";
         corpoEmail += "Foi solicitado a criação de conta para o email " + email;
         corpoEmail += "<br><br>";
