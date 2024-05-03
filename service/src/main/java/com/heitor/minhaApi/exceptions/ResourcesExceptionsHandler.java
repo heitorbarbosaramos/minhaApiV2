@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ResourcesExceptionsHandler {
@@ -123,6 +124,24 @@ public class ResourcesExceptionsHandler {
         MensagemPadrao obj = new MensagemPadrao();
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<MensagemPadrao> noSuchElementException(NoSuchElementException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         obj.setIdStatus(httpStatus.value());
         obj.setCausa(httpStatus.toString());
