@@ -135,6 +135,42 @@ public class ResourcesExceptionsHandler {
         return  ResponseEntity.status(httpStatus).body(obj);
     }
 
+    @ExceptionHandler(StackOverflowError.class)
+    public ResponseEntity<MensagemPadrao> stackOverflowError(StackOverflowError e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<MensagemPadrao> nullPointerException(NullPointerException e, HttpServletRequest request){
+
+        MensagemPadrao obj = new MensagemPadrao();
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        obj.setIdStatus(httpStatus.value());
+        obj.setCausa(httpStatus.toString());
+        obj.setMensagem(e.getMessage());
+        obj.setPath(request.getContextPath() + request.getServletPath());
+        obj.setData(LocalDateTime.now());
+
+        e.printStackTrace();
+
+        return  ResponseEntity.status(httpStatus).body(obj);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrosLista> validation(MethodArgumentNotValidException e, HttpServletRequest request){
 
