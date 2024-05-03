@@ -12,8 +12,4 @@ public class StringUtils {
         }
         return gerado.toString();
     }
-
-    public static void main(String[] args) {
-        System.out.println(geradorCaracteresNumericos(6));
-    }
 }
