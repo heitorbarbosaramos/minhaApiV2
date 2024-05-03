@@ -44,6 +44,9 @@ public class UsuarioService {
     @Value("${cookies.name.token}")
     private String tokenName;
 
+    @Value("${timeout.create.new.user.minutes}")
+    private Integer timeOutCreteUser;
+
     public Usuario save(Usuario usuario){
 
         if(usuario.getEndereco() != null){
@@ -77,7 +80,7 @@ public class UsuarioService {
 
         String corpoEmail = CorpoEmail.criarConta(usuario.getNome(),
                     usuario.getEmail(),
-                    LocalDateTime.now().plusMinutes(30),
+                    LocalDateTime.now().plusMinutes(timeOutCreteUser),
                     usuario.getCodigoConfirmacao(), linkStep1);
         emailService.enviaEmail(usuario.getEmail(), "Criação de Conta STEP 1", corpoEmail);
     }
