@@ -16,8 +16,6 @@ const InfoSystem = () => {
         })
     }, [])
 
-    console.log(dados)
-
     return (
         <Card subTitle={dados.name} className="text">
             <p className="m-0" style={{ fontSize: "10px" }}>
