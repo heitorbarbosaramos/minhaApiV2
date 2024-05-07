@@ -12,6 +12,7 @@ Este projeto utiliza:
 	* Docker
 	* Spring Boot 3.2.4
 	* Java 17
+ 	* Node 20.12.2
 	
 
 ### Execução
