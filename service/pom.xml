@@ -11,7 +11,7 @@
 	<groupId>com.heitor</groupId>
 	<artifactId>minhaApi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>minhaApi</name>
+	<name>Minha API</name>
 	<description>Aplicação Spring Boot utilizando KeyCloak</description>
 	<properties>
 		<java.version>17</java.version>
