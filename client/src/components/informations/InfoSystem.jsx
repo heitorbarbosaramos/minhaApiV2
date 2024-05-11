@@ -17,7 +17,11 @@ const InfoSystem = () => {
     }, [])
 
     return (
-        <Card subTitle={dados.name} className="text">
+        <Card className="text card-info">
+            <p className="title">
+                {dados.name}
+            </p>
+
             <p className="m-0" style={{ fontSize: "10px" }}>
                 {dados.description}
             </p>

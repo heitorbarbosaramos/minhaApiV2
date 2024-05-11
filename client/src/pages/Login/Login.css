@@ -1,0 +1,13 @@
+.container{
+    border: solid 1px rgb(113, 136, 136);
+    border-radius: 10px;
+    max-width: 450px;
+    padding: 10px;
+    background-color: rgb(45, 28, 122, 0.2);
+    box-shadow: 20px 20px 14px rgba(0, 0, 0, 0.7);
+}
+
+.textLogin{
+    color: white;
+    text-shadow: 3px 3px 4px #700707;
+}
