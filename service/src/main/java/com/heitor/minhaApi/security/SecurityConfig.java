@@ -1,6 +1,7 @@
 package com.heitor.minhaApi.security;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -19,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 
 import java.util.*;
@@ -55,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> corsFilter())
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll();
                     auth.requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll();
@@ -92,15 +94,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(bucketFront));
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token", "x-requested-with", "x-xsrf-token","X-XSRF-TOKEN", "Access-Control-Allow-Origin: *"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "X-Auth-Token","x-auth-token", "x-requested-with","X-XSRF-TOKEN"));
-        configuration.setAllowCredentials(false);
+    CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedOrigins(Arrays.asList(bucketFront));
+        config.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS","PATCH"));
+        config.setAllowedHeaders(Arrays.asList("authorization", "content-type", "X-Auth-Token","x-auth-token", "x-requested-with","X-XSRF-TOKEN"));
+        config.setAllowCredentials(false);
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
