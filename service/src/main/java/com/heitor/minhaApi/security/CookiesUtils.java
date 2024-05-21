@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -52,5 +54,18 @@ public class CookiesUtils {
         cookie.setHttpOnly(Boolean.FALSE);
         cookie.setDomain(cookieDomain);
         response.addCookie(cookie);
+    }
+
+    public void revokeCookies(HttpServletRequest request, HttpServletResponse response) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                Cookie newCookie = new Cookie(cookie.getName(), "");
+                newCookie.setMaxAge(0);
+                newCookie.setPath(cookie.getPath() != null ? cookie.getPath() : "/");
+                newCookie.setHttpOnly(cookie.isHttpOnly());
+                newCookie.setSecure(cookie.getSecure());
+                response.addCookie(newCookie);
+            }
+        }
     }
 }

@@ -96,4 +96,7 @@ public interface KeycloakClient {
 
     @DeleteMapping(value = "/admin/realms/${keycloak.client.realm}/sessions/{idSession}")
     void deleteSession(@RequestHeader("Authorization") String authorizationHeader, @PathVariable("idSession") String idSession);
+
+    @GetMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/logout")
+    void logout(@RequestHeader("Authorization") String authorizationHeader);
 }

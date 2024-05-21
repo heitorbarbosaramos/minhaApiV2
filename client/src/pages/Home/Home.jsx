@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import InfoSystem from '../../components/informations/InfoSystem.jsx'
 import ToastSystem from '../../components/Toast/ToastSystem.jsx'
 import { Button } from 'primereact/button'
+import Logout from '../Login/Logout.jsx'
 
 const Home = () => {
 
@@ -32,6 +33,10 @@ const Home = () => {
             <p className="read-the-docs">
                 Click on the Vite and React logos to learn more
             </p>
+
+            <div className="d-flex p-2 gap-3">
+                <Logout />
+            </div>
 
             <div className="d-flex p-2 gap-3">
                 <Button label='TOP LEFT' className='btn btn-primary' onClick={() => { setPosition("top-left") }} />

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +33,8 @@ public class LoginService {
     private String userAdminKeycloak;
     @Value("${keycloak.client.adminSenha}")
     private String userAdminKeycloakPassword;
+    @Value("${bucket.front.url}")
+    private String bucketFront;
 
     private TokenResponse tokenResponse(TokenRequest tokenRequest){
         return keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
@@ -85,6 +88,13 @@ public class LoginService {
 
         UserInfoResponse userInfo = keycloakClient.getUserInfo("Bearer " + response.getAccess_token());
         return ResponseEntity.ok(userInfo);
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.logout(token);
+        cookiesUtils.revokeCookies(request, response);
+        response.sendRedirect(bucketFront);
     }
 
     public UserIntrospectResponse userIntrospectResponse(String token){

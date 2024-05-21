@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -33,6 +34,16 @@ public class ControllerAuth {
     public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA REALIZAR LOGIN");
         return ResponseEntity.ok(service.login(request, response, loginDTO));
+    }
+
+    @GetMapping("/logout")
+    @Operation(tags = {"Autenticacao"}, summary = "Realizar logout",
+            description = "Requisição GET para Realizar logout", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info("REQUISICAO GET PARA FAZER LOGOUT");
+        service.logout(request, response);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/refreshToken")

@@ -57,10 +57,10 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         
-        ApiService.get("/login/logout").catch(error => {console.error(error)});
+        ApiService.get("/user/logout").catch(error => {console.error(error)});
         setUser(null);
         logado = false;
-        navigate("/")
+        navigate("/login")
     }
 
     return(
