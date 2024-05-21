@@ -37,6 +37,7 @@ a:hover {
   .page{
     flex-direction: column;
   }
+
  }
 
  /* tablets retrato, iPad retrato, e-readers (Nook / Kindle), paisagem 800x480 telefones (Android) */
@@ -47,7 +48,11 @@ a:hover {
 }
 
 /* tablet, iPad paisagem, laptops lo-res e desktops */
-@media (max-width:801px) {  }
+@media (max-width:801px) { 
+  .containerLogin{
+    box-shadow: 10px 20px 14px rgba(0, 0, 0, 0.7);;
+  }
+ }
 
 /* Tablets, laptops e desktops de grande paisagem */
 @media (max-width:1025px) {  }
