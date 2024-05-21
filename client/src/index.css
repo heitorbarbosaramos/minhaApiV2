@@ -1,3 +1,20 @@
+:root {
+  --cor-primaria: #000000;
+  --cor-secundaria: #F6F6F6;
+  --cor-terciaria: #22D4FD;
+  --cor-hover: #272727;
+
+  --fonte-primaria: 'Krona One', sans-serif;
+  --fonte-secundaria: 'Montserrat', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: rgb(207,207,207);
+  background: linear-gradient(180deg, rgba(207,207,207,1) 0%, rgba(244,244,246,0.804359243697479) 62%);
+  font-size: 1rem;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -8,8 +25,32 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  background: rgb(207,207,207);
-  background: linear-gradient(180deg, rgba(207,207,207,1) 0%, rgba(244,244,246,0.804359243697479) 62%);
+.page {
+  display: flex;
 }
+
+/* smartphones, iPhone retrato, retrato 480x320 telefones (Android) */ 
+@media (max-width:320px) { }
+
+/* smartphones, telefones Android, iPhone paisagem */
+@media (max-width:480px) {
+  .page{
+    flex-direction: column;
+  }
+ }
+
+ /* tablets retrato, iPad retrato, e-readers (Nook / Kindle), paisagem 800x480 telefones (Android) */
+@media (max-width:600px) {  
+  body {
+    background: rgb(207,207,207);
+  }
+}
+
+/* tablet, iPad paisagem, laptops lo-res e desktops */
+@media (max-width:801px) {  }
+
+/* Tablets, laptops e desktops de grande paisagem */
+@media (max-width:1025px) {  }
+
+/* Laptops e desktops de alta resolução */
+@media (max-width:1281px) {  }

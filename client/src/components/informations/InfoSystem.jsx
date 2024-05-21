@@ -22,10 +22,10 @@ const InfoSystem = () => {
                 {dados.name}
             </p>
 
-            <p className="m-0" style={{ fontSize: "10px" }}>
+            <p className="m-0" style={{ fontSize: "0.8rem" }}>
                 {dados.description}
             </p>
-            <p className="m-0" style={{ fontSize: "10px" }}>
+            <p className="m-0" style={{ fontSize: "0.6rem" }}>
                 Versão: {dados.version}
             </p>
         </Card>

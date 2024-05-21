@@ -17,7 +17,7 @@ const ToastSystem = ({message, severity, summary, life, position, show, setShow}
       
     return (
         <div>
-            <Toast ref={toasting} position={position}/>
+            <Toast ref={toasting} position={position} />
         </div>
     )
 }
