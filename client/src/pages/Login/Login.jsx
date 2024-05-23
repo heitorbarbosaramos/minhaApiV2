@@ -4,13 +4,13 @@ import { IoKeyOutline } from "react-icons/io5"
 import { Divider } from 'primereact/divider'
 import './Login.css'
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import InfoSystem from "../../components/informations/InfoSystem";
 import { AuthContext } from '../../context/AuthProvider/AuthProvider'
 
 const Login = () => {
 
-    const { login, recoveryPassword, recuperaSenha, loginSocial, mensagemToast } = useContext(AuthContext);
+    const { login, recoveryPassword, recuperaSenha, loginSocial, mensagemToast, VerifyLoggedIn } = useContext(AuthContext);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +22,8 @@ const Login = () => {
         login(username, password)
     };
 
+    VerifyLoggedIn();
+    
     return (
         <div className="page">
             <div className="container containerLogin">
