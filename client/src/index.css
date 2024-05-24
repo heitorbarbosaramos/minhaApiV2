@@ -1,18 +1,16 @@
 :root {
-  --cor-primaria: #000000;
-  --cor-secundaria: #F6F6F6;
-  --cor-terciaria: #22D4FD;
-  --cor-hover: #272727;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
-  --fonte-primaria: 'Krona One', sans-serif;
-  --fonte-secundaria: 'Montserrat', sans-serif;
-}
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
 
-body {
-  margin: 0;
-  background: rgb(207,207,207);
-  background: linear-gradient(180deg, rgba(207,207,207,1) 0%, rgba(244,244,246,0.804359243697479) 62%);
-  font-size: 1rem;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -20,42 +18,51 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
-
 a:hover {
   color: #535bf2;
 }
 
-.page {
+body {
+  margin: 0;
   display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
-/* smartphones, iPhone retrato, retrato 480x320 telefones (Android) */ 
-@media (max-width:320px) { }
-
-/* smartphones, telefones Android, iPhone paisagem */
-@media (max-width:480px) {
-  .page{
-    flex-direction: column;
-  }
-
- }
-
- /* tablets retrato, iPad retrato, e-readers (Nook / Kindle), paisagem 800x480 telefones (Android) */
-@media (max-width:600px) {  
-  body {
-    background: rgb(207,207,207);
-  }
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-/* tablet, iPad paisagem, laptops lo-res e desktops */
-@media (max-width:801px) { 
-  .containerLogin{
-    box-shadow: 10px 20px 14px rgba(0, 0, 0, 0.7);;
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
   }
- }
-
-/* Tablets, laptops e desktops de grande paisagem */
-@media (max-width:1025px) {  }
-
-/* Laptops e desktops de alta resolução */
-@media (max-width:1281px) {  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
