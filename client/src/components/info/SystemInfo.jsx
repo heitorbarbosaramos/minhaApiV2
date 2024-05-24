@@ -10,15 +10,19 @@ const SystemInfo = () => {
         }).catch((error) => {
             console.error(error)
         })
-    },[])
+    }, [])
 
     console.log(data)
-    return(
+    return (
         <>
             System Info
-            <p>{data.name}</p>
-            <p>{data.description}</p>
-            <p>{data.version}</p>
+            {data && (
+                <>
+                    <p>{data.name}</p>
+                    <p>{data.description}</p>
+                    <p>{data.version}</p>
+                </>
+            )}
         </>
     )
 }
