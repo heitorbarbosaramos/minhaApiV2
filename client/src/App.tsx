@@ -1,7 +1,12 @@
+import { Outlet } from "react-router-dom"
+
 function App() {
   return (
     <>
-      Olá bem vindo ao projeto
+      <p>Olá bem vindo ao projeto</p>
+      <p>menu</p>
+      <Outlet />
+      <p>footer</p>
     </>
   )
 }
