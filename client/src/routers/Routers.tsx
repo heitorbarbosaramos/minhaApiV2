@@ -20,6 +20,30 @@ const routers = createBrowserRouter([
             {
                 path: "tercearia",
                 element: <Tercearia />
+            },
+            {
+                path: "pg4",
+                element: <span>PG - 4</span>
+            }
+            ,
+            {
+                path: "pg5",
+                element: <span>PG - 5</span>
+            }
+            ,
+            {
+                path: "pg6",
+                element: <span>PG - 6</span>
+            }
+            ,
+            {
+                path: "pg7",
+                element: <span>PG - 7</span>
+            }
+            ,
+            {
+                path: "pg8",
+                element: <span>PG - 8</span>
             }
         ]
     }
