@@ -32,13 +32,11 @@ const Menu = () => {
         }
     ]
 
-    console.log(items)
     return (
         <nav>
             {items.map((menuSection, sectionIndex) => (
-                <div key={sectionIndex}>
+                <ul key={sectionIndex}>
                     <h3>{menuSection.label}</h3>
-                    <ul>
                         {menuSection.items.map((item, itemIndex) => item.visible && (
                             <Link to={item.to}>
                                 <li key={itemIndex}>
@@ -46,8 +44,7 @@ const Menu = () => {
                                 </li>
                             </Link>
                         ))}
-                    </ul>
-                </div>
+                </ul>
             ))}
         </nav>
     );
