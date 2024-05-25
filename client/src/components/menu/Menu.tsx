@@ -16,7 +16,7 @@ const Menu = () => {
             label: "Complementos",
             items: [
                 { label: "Secundaria", icon: <BiAtom />, to: "secundaria", visible: true, disabled: false, target: "_parent" },
-                { label: "Tercearia", icon: <BiBot />,   to: "tercearia", visible: true, disabled: false, target: "_parent" }
+                { label: "Tercearia", icon: <BiBot />,   to: "tercearia",  visible: true, disabled: false, target: "_parent" }
             ]
         },
         {
@@ -30,7 +30,6 @@ const Menu = () => {
                
             ]
         }
-        
     ]
 
     console.log(items)
