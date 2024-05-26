@@ -5,4 +5,5 @@ footer{
     align-items: var(--align-text-footer);
     text-align: var(--text-algn-footer);
     width: var(--width-footer);
+    font-family: var(--font-family-logo);
 }
