@@ -1,9 +1,14 @@
 import { IoHomeOutline } from "react-icons/io5"
 import { MenuModel } from "../../types/MenuItem"
 import { BiAbacus, BiAlarm, BiAlbum, BiAnchor, BiAtom, BiBot, BiBug } from "react-icons/bi"
+import { MenuContext } from "../../context/menu/MenuContext"
 import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import "./Menu.css"
 
 const Menu = () => {
+
+    const { oculta } = useContext(MenuContext)
 
     const items: MenuModel[] = [
         {
@@ -32,14 +37,16 @@ const Menu = () => {
         }
     ]
 
+    const [active, setActive] = useState("")
+
     return (
-        <nav>
+        <nav className={oculta ? "menu mostrar" : "menu ocultar"}>
             {items.map((menuSection, sectionIndex) => (
                 <ul key={sectionIndex}>
-                    <h3>{menuSection.label}</h3>
+                    <h3 className="nameLabelMenu">{menuSection.label}</h3>
                         {menuSection.items.map((item, itemIndex) => item.visible && (
-                            <Link to={item.to}>
-                                <li key={itemIndex}>
+                            <Link to={item.to} onClick={() => {setActive(item.to)}}>
+                                <li key={itemIndex} className={active === item.to ? "active" : ""}>
                                     {item.icon} {item.label}
                                 </li>
                             </Link>

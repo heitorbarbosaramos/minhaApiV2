@@ -1,0 +1,49 @@
+.menu {
+    width: var(--width-menu);
+    height: var(--heigth-menu);
+    overflow-y: var(--owerflow-menu);
+    background-color: var(--color-background-menu);
+    margin: var(--margin-menu);
+    border-radius: var(--pading-menu);
+    border: var(--color-border-menu);
+    box-shadow: var(--box-shadow);
+}
+
+.menu ul {
+    margin: var(--ul-margin-menu);
+    padding-right: var(--ul-padding-right-menu);
+    padding: 0;
+    list-style-type: none;
+
+}
+
+.menu li {
+    flex: 1;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+.active {
+    font-size: var(--li-item-menu-active-font-size);
+    color: var(--li-item-menu-active-font-color);
+    text-shadow: var(--li-item-menu-activr-text-shadow);
+    transition: all .5s;
+}
+
+.ocultar {
+    position: fixed;
+    opacity: 1;
+    transform: translateX(-200%);
+    transition: opacity 2s ease, transform 2s ease;
+}
+
+.mostrar {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.nameLabelMenu {
+    color: var(--color-label-item-menu);
+    font-size: var(--font-size-label-item-menu);
+}

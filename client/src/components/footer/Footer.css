@@ -1,0 +1,8 @@
+footer{
+    position: var(--position-footer);
+    bottom: var(--bottom-footer);
+    margin-bottom: var(--margin-bottom-footer);
+    align-items: var(--align-text-footer);
+    text-align: var(--text-algn-footer);
+    width: var(--width-footer);
+}

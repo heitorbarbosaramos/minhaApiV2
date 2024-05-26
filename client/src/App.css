@@ -1,0 +1,14 @@
+.bodyPrimary{
+    display: flex;
+}
+
+.bodyRenderiza{
+    margin: var(--maring-body-renderiza);
+    width: var(--width-body-renderiza);
+    height: var(--heigth-body-renderiza);
+    background-color: var(--background-color-body-renderiza);
+    border-radius: var(--border-radius-body-renderiza);
+    padding: var(--pading-body-renderiza);
+    overflow-x: var(--overflow-x-body-renderiza);
+    box-shadow: var(--box-shadow);
+}
