@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inconsolata:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
 
 :root{
+    --font-family: "Inconsolata", monospace;
+    
     --color-background: #c4c4c4;
     --color-header: #2a323d;
 
@@ -20,11 +23,17 @@
     --li-item-menu-active-font-color: #fff;
     --li-item-menu-activr-text-shadow: 0.1em 0.1em 0.5em #a53333;
 
+    --width-header: 300px;
+    --font-family-logo: "Caveat", cursive;
     --heigth-header: 50px;
     --padding-header: 10px;
     --color-text-logo: #ffffff;
-    --font-text-sizi-logo: 1.4rem;
+    --font-text-sizi-logo: 2.2rem;
     --border-bottom-header: 1px solid #e6dfdf;
+    --text-shadow-logo-header: 0.1rem 0.1rem 0.9rem #ffffff;
+    --font-weight-logo-header: 900;
+    --webkit-text-stroke-width-logo-header: 0.06rem;
+    --webkit-text-stroke-color-logo-header: #000000;
 
     --margin-left-bottom-hide-menu: 10px;
     --font-size-bottom-hide-menu:  1.5rem;
@@ -60,6 +69,6 @@ a{
 
 body{
     margin: 0px;
-    font-family: "Inconsolata", monospace;
+    font-family: var(--font-family);
     background-color: var(--color-background);
 }

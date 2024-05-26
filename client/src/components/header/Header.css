@@ -16,8 +16,14 @@
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 10px;
+    width: var(--width-header);
     font-size: var(--font-text-sizi-logo);
     color: var(--color-text-logo);
+    font-family: var(--font-family-logo);
+    font-weight: var(--font-weight-logo-header);
+    text-shadow: var(--text-shadow-logo-header);
+    -webkit-text-stroke-width: var(--webkit-text-stroke-width-logo-header);
+    -webkit-text-stroke-color: var(--webkit-text-stroke-color-logo-header);
 }
 
 .logoHideBotton {
