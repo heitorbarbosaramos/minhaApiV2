@@ -40,6 +40,8 @@ public class LoginService {
     private String keycloakClientServer;
     @Value("${keycloak.client.uri.redirect}")
     private String uriRedirect;
+    @Value("${keycloak.client.sso.provider}")
+    private String ssoProvider;
 
     private TokenResponse tokenResponse(TokenRequest tokenRequest){
         return keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
@@ -58,6 +60,10 @@ public class LoginService {
     public HashMap<String, String> loginSocial(){
         HashMap<String, String> list = new HashMap<>();
         list.put("geral", keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid");
+        String[] provider = ssoProvider.split(",");
+        for(String x : provider){
+            list.put(x, keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid&kc_idp_hint="+x);
+        }
         return list;
     }
 
