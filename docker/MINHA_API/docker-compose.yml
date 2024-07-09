@@ -11,7 +11,7 @@ services:
     ports:
       - "3333:5432"
     volumes:
-      - ./:/var/lib/postgresql/dataMinhaApi
+      - postgres_minha_api_data:/var/lib/postgresql/dataMinhaApi
       - ./init-schema.sql:/docker-entrypoint-initdb.d/init-schema.sql
     networks:
       - minha_api_v2
@@ -32,8 +32,19 @@ services:
       - 8090:8080
     depends_on:
       - postgres
+    volumes:
+      - keycloak_minha_api_data:/opt/jboss/keycloak/standalone/data
+      - ./realm-minha-api-export.json:/opt/jboss/keycloak/realm-minha-api-export.json
+    command:
+      - "-b"
+      - "0.0.0.0"
+      - "-Dkeycloak.import=/opt/jboss/keycloak/realm-minha-api-export.json"
     networks:
       - minha_api_v2
+
+volumes:
+  postgres_minha_api_data:
+  keycloak_minha_api_data:
 
 networks:
   minha_api_v2:

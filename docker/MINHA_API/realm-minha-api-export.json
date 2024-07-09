@@ -1,0 +1,101 @@
+{
+  "id": "REALM_MINHAAPI",
+  "realm": "REALM_MINHAAPI",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "CLIENT_MINHA_API",
+      "rootUrl": "${authBaseUrl}",
+      "adminUrl": "${authBaseUrl}",
+      "baseUrl": "/realms/REALM_MINHAAPI/account/",
+      "redirectUris": ["/realms/REALM_MINHAAPI/account/*"],
+      "webOrigins": ["+"],
+      "clientAuthenticatorType": "client-secret",
+      "secret": "LORKRYVFxdaTf8WVIOWQ6QNg1xAzCSBd",
+      "enabled": true,
+      "publicClient": false,
+      "directAccessGrantsEnabled": true,
+      "frontchannelLogout": true,
+      "attributes": {
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "true"
+      }
+    }
+  ],
+   "identityProviders": [
+    {
+      "alias": "google",
+      "internalId": "995627c5-cfa5-4eed-96c6-5ac5491aeb77",
+      "providerId": "google",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": true,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "firstBrokerLoginFlowAlias": "first broker login",
+      "config": {
+        "offlineAccess": "false",
+        "userIp": "false",
+        "clientSecret": "seu_cliente_secret",
+        "clientId": "seu_client_id"
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMINISTRADOR",
+        "description": "Role for administrators"
+      },
+      {
+        "name": "USER",
+        "description": "Role for standard users"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "userAdminKeycloak",
+      "email": "userAdminKeycloak@minhaapi.com",
+      "emailVerified": true,
+      "firstName": "Administrador",
+      "lastName": "Sistema Minha Api",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "userAdminKeycloak",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "offline_access",
+		"manage-users",
+		"manage-realm",
+		"uma_authorization",
+		"realm-admin",
+		"view-users",
+        "default-roles-REALM_MINHAAPI",
+		"default-roles-REALM_MINHAAPI"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-authorization",
+          "view-clients",
+          "query-groups"
+        ],
+        "broker": [
+          "read-token"
+        ],
+        "account": [
+          "delete-account",
+          "manage-account",
+          "view-applications",
+          "manage-consent"
+        ]
+      }
+    }
+  ]
+}
