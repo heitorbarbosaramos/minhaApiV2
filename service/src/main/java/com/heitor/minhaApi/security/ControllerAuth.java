@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -27,13 +28,30 @@ public class ControllerAuth {
 
     private final LoginService service;
 
+    @GetMapping("/loginSocial")
+    @Operation(tags = {"Autenticacao"}, summary = "Obter links do login social",
+            description = "Requisição GET para Obter links do login social"
+    )
+    public ResponseEntity<HashMap<String, String>> loginSocial(HttpServletResponse response) throws IOException {
+        log.info("REQUISICAO GET PARA RECUPERAR LINKS PARA O LOGIN SOCIAL");
+        return ResponseEntity.ok(service.loginSocial());
+    }
+
+    @GetMapping("/code")
+    public ResponseEntity<?> social(
+            @RequestParam(value = "session_state") String sessionState,
+            @RequestParam(value = "code") String code, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO GET PARA RECUPERAR O CODE DO LOGIN SOCIAL");
+        return ResponseEntity.ok(service.trocaCode(request, response, code, sessionState));
+    }
+
     @PostMapping("/login")
     @Operation(tags = {"Autenticacao"}, summary = "Realizar login através de um usuário e senha",
             description = "Requisição POST para Realizar login através de um usuário e senha"
     )
     public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA REALIZAR LOGIN");
-        return ResponseEntity.ok(service.login(request, response, loginDTO));
+        return ResponseEntity.ok(service.login(request, response, loginDTO, null));
     }
 
     @GetMapping("/logout")

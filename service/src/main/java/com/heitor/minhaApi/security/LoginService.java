@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +36,10 @@ public class LoginService {
     private String userAdminKeycloakPassword;
     @Value("${bucket.front.url}")
     private String bucketFront;
+    @Value("${keycloak.client.server}")
+    private String keycloakClientServer;
+    @Value("${keycloak.client.uri.redirect}")
+    private String uriRedirect;
 
     private TokenResponse tokenResponse(TokenRequest tokenRequest){
         return keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
@@ -50,16 +55,38 @@ public class LoginService {
         return keycloakClient.getTokenAdmin("application/x-www-form-urlencoded",tokenRequest);
     }
 
-    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, UsuarioLoginDTO loginDTO){
+    public HashMap<String, String> loginSocial(){
+        HashMap<String, String> list = new HashMap<>();
+        list.put("geral", keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid");
+        return list;
+    }
+
+    public ResponseEntity<?> trocaCode(HttpServletRequest request, HttpServletResponse response,String code, String sesseioState){
+
+        TokenRequestSocial social = new TokenRequestSocial();
+        social.setGrant_type("authorization_code");
+        social.setCode(code);
+        social.setRedirect_uri(uriRedirect);
+        social.setClient_id(clientId);
+        social.setClient_secret(clientSecret);
+
+        TokenResponse tokenResponse = keycloakClient.loginSocialCode(social);
+
+        return login(request, response, null, tokenResponse);
+    }
+
+    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response, UsuarioLoginDTO loginDTO, TokenResponse tokenResponseParam){
 
         TokenRequest tokenRequest = new TokenRequest();
-        tokenRequest.setClient_id(clientId);
-        tokenRequest.setClient_secret(clientSecret);
-        tokenRequest.setGrant_type(grantType);
-        tokenRequest.setUsername(loginDTO.getUsername());
-        tokenRequest.setPassword(loginDTO.getPassword());
+        if(loginDTO != null) {
+            tokenRequest.setClient_id(clientId);
+            tokenRequest.setClient_secret(clientSecret);
+            tokenRequest.setGrant_type(grantType);
+            tokenRequest.setUsername(loginDTO.getUsername());
+            tokenRequest.setPassword(loginDTO.getPassword());
+        }
 
-        TokenResponse tokenResponse = tokenResponse(tokenRequest);
+        TokenResponse tokenResponse = tokenResponseParam == null ? tokenResponse(tokenRequest) : tokenResponseParam;
 
         UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
 
