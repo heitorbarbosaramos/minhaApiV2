@@ -29,7 +29,7 @@ public class ControllerAuth {
 
     @PostMapping("/login")
     @Operation(tags = {"Autenticacao"}, summary = "Realizar login através de um usuário e senha",
-            description = "Requisição POST para Realizar login através de um usuário e senha", security = {@SecurityRequirement(name = "Bearer")}
+            description = "Requisição POST para Realizar login através de um usuário e senha"
     )
     public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         log.info("REQUISICAO POST PARA REALIZAR LOGIN");

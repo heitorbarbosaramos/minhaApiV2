@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@SecurityScheme(type = SecuritySchemeType.HTTP, name = "BearerJWT", scheme = "bearer", bearerFormat = "JWT", description = "Bearer Token para o projeto.")
+@SecurityScheme(type = SecuritySchemeType.HTTP, name = "Bearer", scheme = "bearer", bearerFormat = "JWT", description = "Bearer Token para o projeto.")
 @OpenAPIDefinition(servers =  {	@Server(url = "http://localhost:8080/rest"),	@Server(url = "http://outroservidor:9090")})
 public class SwaggerConfig {
 

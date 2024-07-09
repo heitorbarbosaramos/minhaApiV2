@@ -26,7 +26,7 @@ public class UsuarioController {
 
     @PostMapping("/create/step1")
     @Operation(tags = {"Usuario"}, summary = "Criar Usuario Step 1",
-            description = "Requisicao para Criar Usuario Step 1", security = {@SecurityRequirement(name = "Bearer")}
+            description = "Requisicao para Criar Usuario Step 1"
     )
     public ResponseEntity<?> usuarioCreateStep1(@RequestBody @Valid UsuarioCreateDTO usuario){
         log.info("REQUISICAO POST PARA CRIAR USUÁRIO STEP 1");
