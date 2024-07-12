@@ -1,5 +1,8 @@
 package com.heitor.minhaApi.security;
 
+import com.heitor.minhaApi.entity.Usuario;
+import com.heitor.minhaApi.enums.UsuarioStatus;
+import com.heitor.minhaApi.repostirory.UsuarioRepository;
 import com.heitor.minhaApi.security.feignClient.*;
 import com.heitor.minhaApi.security.utils.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +21,7 @@ public class LoginService {
 
     private final KeycloakClient keycloakClient;
     private final CookiesUtils cookiesUtils;
+    private final UsuarioRepository usuarioRepository;
 
     @Value("${keycloak.client.id}")
     private String clientId;
@@ -95,6 +96,19 @@ public class LoginService {
         TokenResponse tokenResponse = tokenResponseParam == null ? tokenResponse(tokenRequest) : tokenResponseParam;
 
         UserIntrospectResponse responserUser = userIntrospectResponse(tokenResponse.getAccess_token());
+
+        if(loginDTO == null){
+            Usuario usuario = usuarioRepository.findByIdUsuarioKeycloak(UUID.fromString(responserUser.getSub()));
+            if(usuario == null) {
+                usuario = new Usuario();
+                usuario.setIdUsuarioKeycloak(UUID.fromString(responserUser.getSub()));
+                usuario.setNome(responserUser.getGiven_name());
+                usuario.setSobreNome(responserUser.getFamily_name());
+                usuario.setEmail(responserUser.getEmail());
+                usuario.setStatus(UsuarioStatus.ATIVADO_REDE_SOCIAL);
+                usuarioRepository.save(usuario);
+            }
+        }
 
         List<String > roles = new ArrayList<>();
 

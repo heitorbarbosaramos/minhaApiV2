@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
@@ -24,4 +25,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "   tu.idUsuarioKeycloak is null " +
             "   and timestampRecuperaSenha < :timeStamp")
     List<Usuario> findByUserTimoutCreat(@Param("timeStamp") Long timeStamp);
+
+    Usuario findByIdUsuarioKeycloak(UUID uuid);
 }
