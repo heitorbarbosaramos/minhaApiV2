@@ -48,6 +48,17 @@ public class ControllerAuth {
         return ResponseEntity.ok(service.findAllIdentytiProvider(request, response));
     }
 
+    @DeleteMapping("/deleteProvider/{aliasProvider}")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
+    @Operation(tags = {"Autenticacao"}, summary = "Delete Provider social",
+            description = "Requisição DELETE para Deletar Provider social", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<Void> deleteProvider(@PathVariable("aliasProvider")String aliasProvider, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO DELETE PARA DELETAR UM PROVIDER SSO");
+        service.deleteProvider(aliasProvider, request, response);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/loginSocial")
     @Operation(tags = {"Autenticacao"}, summary = "Obter links do login social",
             description = "Requisição GET para Obter links do login social"

@@ -74,6 +74,12 @@ public class LoginService {
         return keycloakClient.findAllIdentytiProvider(token);
     }
 
+    public void deleteProvider(String aliasProvider, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.deleteProvider(token, aliasProvider);
+        providerSSOService.deleteProvider(aliasProvider);
+    }
+
     public HashMap<String, String> loginSocial(){
         HashMap<String, String> list = new HashMap<>();
         list.put("geral", keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid");

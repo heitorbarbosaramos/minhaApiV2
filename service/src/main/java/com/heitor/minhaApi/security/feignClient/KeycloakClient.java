@@ -15,6 +15,9 @@ public interface KeycloakClient {
     @GetMapping(value = "/admin/realms/${keycloak.client.realm}/identity-provider/instances", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<IdentytiProvider> findAllIdentytiProvider(@RequestHeader("Authorization") String Authorization);
 
+    @DeleteMapping(value = "/admin/realms/${keycloak.client.realm}/identity-provider/instances/{aliasProvider}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void deleteProvider(@RequestHeader("Authorization") String Authorization, @PathVariable("aliasProvider") String aliasProvider);
+
     @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
     TokenResponse loginSocialCode(@RequestBody TokenRequestSocial social);
 
