@@ -1,10 +1,12 @@
 package com.heitor.minhaApi.security;
 
+import com.heitor.minhaApi.entity.IdentytiProviderSSO;
 import com.heitor.minhaApi.entity.Usuario;
 import com.heitor.minhaApi.enums.UsuarioStatus;
 import com.heitor.minhaApi.repostirory.UsuarioRepository;
 import com.heitor.minhaApi.security.feignClient.*;
 import com.heitor.minhaApi.security.utils.TokenUtils;
+import com.heitor.minhaApi.service.IdentytiProviderSSOService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class LoginService {
     private final KeycloakClient keycloakClient;
     private final CookiesUtils cookiesUtils;
     private final UsuarioRepository usuarioRepository;
+    private final IdentytiProviderSSOService providerSSOService;
 
     @Value("${keycloak.client.id}")
     private String clientId;
@@ -41,8 +44,6 @@ public class LoginService {
     private String keycloakClientServer;
     @Value("${keycloak.client.uri.redirect}")
     private String uriRedirect;
-    @Value("${keycloak.client.sso.provider}")
-    private String ssoProvider;
 
     private TokenResponse tokenResponse(TokenRequest tokenRequest){
         return keycloakClient.getToken("application/x-www-form-urlencoded", tokenRequest);
@@ -58,12 +59,29 @@ public class LoginService {
         return keycloakClient.getTokenAdmin("application/x-www-form-urlencoded",tokenRequest);
     }
 
+    public void createIdentytiProvider(IdentytiProviderCreate create, HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        keycloakClient.createIdentytiProvider(token, create);
+
+        IdentytiProviderSSO sso = new IdentytiProviderSSO();
+        sso.setAlias(create.getAlias());
+        sso.setProviderId(create.getProviderId());
+        providerSSOService.save(sso);
+    }
+
+    public List<IdentytiProvider> findAllIdentytiProvider(HttpServletRequest request, HttpServletResponse response){
+        String token = TokenUtils.RetrieveToken(request);
+        return keycloakClient.findAllIdentytiProvider(token);
+    }
+
     public HashMap<String, String> loginSocial(){
         HashMap<String, String> list = new HashMap<>();
         list.put("geral", keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid");
-        String[] provider = ssoProvider.split(",");
-        for(String x : provider){
-            list.put(x, keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid&kc_idp_hint="+x);
+
+        List<IdentytiProviderSSO> findAllProviders = providerSSOService.findAll();
+
+        for(IdentytiProviderSSO x : findAllProviders){
+            list.put(x.getAlias(), keycloakClientServer+"/realms/"+realm+"/protocol/openid-connect/auth?client_id="+clientId+"&redirect_uri="+uriRedirect+"&response_type=code&scope=openid&kc_idp_hint="+x.getAlias());
         }
         return list;
     }

@@ -9,6 +9,12 @@ import java.util.List;
 @FeignClient(name = "keycloakClient", url = "${keycloak.client.server}")
 public interface KeycloakClient {
 
+    @PostMapping(value = "/admin/realms/${keycloak.client.realm}/identity-provider/instances", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void createIdentytiProvider(@RequestHeader("Authorization") String Authorization, @RequestBody IdentytiProviderCreate providerCreate);
+
+    @GetMapping(value = "/admin/realms/${keycloak.client.realm}/identity-provider/instances", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<IdentytiProvider> findAllIdentytiProvider(@RequestHeader("Authorization") String Authorization);
+
     @PostMapping(value = "/realms/${keycloak.client.realm}/protocol/openid-connect/token", consumes = "application/x-www-form-urlencoded")
     TokenResponse loginSocialCode(@RequestBody TokenRequestSocial social);
 

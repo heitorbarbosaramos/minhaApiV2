@@ -1,8 +1,6 @@
 package com.heitor.minhaApi.security;
 
-import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
-import com.heitor.minhaApi.security.feignClient.UserResetSenha;
-import com.heitor.minhaApi.security.feignClient.UserSessionRepresentation;
+import com.heitor.minhaApi.security.feignClient.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,6 +26,27 @@ import java.util.List;
 public class ControllerAuth {
 
     private final LoginService service;
+
+    @PostMapping("/createProviderIdenttyti")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
+    @Operation(tags = {"Autenticacao"}, summary = "Create Provider social",
+            description = "Requisição POST para Create Provider social", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<?> createProviderIdenttyti(@RequestBody @Valid IdentytiProviderCreate create, HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO POST PARA CRIAR UM PROVIDER SSO");
+        service.createIdentytiProvider(create, request, response);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/findAllIdentytiProvider")
+    @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
+    @Operation(tags = {"Autenticacao"}, summary = "Create Provider social",
+            description = "Requisição POST para Create Provider social", security = {@SecurityRequirement(name = "Bearer")}
+    )
+    public ResponseEntity<List<IdentytiProvider>> findAllIdentytiProviders(HttpServletRequest request, HttpServletResponse response){
+        log.info("REQUISICAO GET PARA RECUPERAR TODOS OS PROVIDERS SSO");
+        return ResponseEntity.ok(service.findAllIdentytiProvider(request, response));
+    }
 
     @GetMapping("/loginSocial")
     @Operation(tags = {"Autenticacao"}, summary = "Obter links do login social",

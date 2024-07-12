@@ -37,7 +37,11 @@ public class ResourcesExceptionsHandler {
             obj.setMensagem("Usuário desativado");
         } else if (e.getMessage().contains("409")) {
             httpStatus = HttpStatus.CONFLICT;
-            obj.setMensagem("Já existe um usuário com o mesmo nome de usuário");
+            if(e.getMessage().contains("Identity Provider")){
+                obj.setMensagem("O Identificador provider já existe");
+            }else {
+                obj.setMensagem("Já existe um usuário com o mesmo nome de usuário");
+            }
         } else if (e.getMessage().contains("400") && e.getMessage().contains("Invalid refresh token")) {
             httpStatus = HttpStatus.FORBIDDEN;
             obj.setMensagem("Token de acesso inválido");
