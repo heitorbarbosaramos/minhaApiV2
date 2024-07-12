@@ -27,9 +27,9 @@ public class ControllerAuth {
 
     private final LoginService service;
 
-    @PostMapping("/createProviderIdenttyti")
+    @PostMapping("/createProviderIdentyti")
     @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
-    @Operation(tags = {"Autenticacao"}, summary = "Create Provider social",
+    @Operation(tags = {"Autenticacao", "PROVIDER_SSO"}, summary = "Create Provider social",
             description = "Requisição POST para Create Provider social", security = {@SecurityRequirement(name = "Bearer")}
     )
     public ResponseEntity<?> createProviderIdenttyti(@RequestBody @Valid IdentytiProviderCreate create, HttpServletRequest request, HttpServletResponse response){
@@ -40,7 +40,7 @@ public class ControllerAuth {
 
     @GetMapping("/findAllIdentytiProvider")
     @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
-    @Operation(tags = {"Autenticacao"}, summary = "Create Provider social",
+    @Operation(tags = {"Autenticacao", "PROVIDER_SSO"}, summary = "Create Provider social",
             description = "Requisição POST para Create Provider social", security = {@SecurityRequirement(name = "Bearer")}
     )
     public ResponseEntity<List<IdentytiProvider>> findAllIdentytiProviders(HttpServletRequest request, HttpServletResponse response){
@@ -50,7 +50,7 @@ public class ControllerAuth {
 
     @DeleteMapping("/deleteProvider/{aliasProvider}")
     @PreAuthorize("hasAnyAuthority('ADMINISTRADOR')")
-    @Operation(tags = {"Autenticacao"}, summary = "Delete Provider social",
+    @Operation(tags = {"Autenticacao", "PROVIDER_SSO"}, summary = "Delete Provider social",
             description = "Requisição DELETE para Deletar Provider social", security = {@SecurityRequirement(name = "Bearer")}
     )
     public ResponseEntity<Void> deleteProvider(@PathVariable("aliasProvider")String aliasProvider, HttpServletRequest request, HttpServletResponse response){
@@ -60,7 +60,7 @@ public class ControllerAuth {
     }
 
     @GetMapping("/loginSocial")
-    @Operation(tags = {"Autenticacao"}, summary = "Obter links do login social",
+    @Operation(tags = {"Autenticacao", "PROVIDER_SSO"}, summary = "Obter links do login social",
             description = "Requisição GET para Obter links do login social"
     )
     public ResponseEntity<HashMap<String, String>> loginSocial(HttpServletResponse response) throws IOException {
