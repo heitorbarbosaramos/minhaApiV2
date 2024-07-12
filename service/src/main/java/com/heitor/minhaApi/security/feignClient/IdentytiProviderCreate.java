@@ -15,4 +15,6 @@ public class IdentytiProviderCreate {
     private String providerId;
     @NotNull(message = "Campo Obrigatório")
     private IdentytiProviderCreateConfig config;
+    private boolean trustEmail;
+    private boolean storeToken;
 }
