@@ -1,88 +1,89 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inconsolata:wght@200..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inconsolata:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap");
 
-:root{
-    --font-family: "Inconsolata", monospace;
-    
-    --color-background: #c4c4c4;
-    --color-header: #2a323d;
+:root {
+  --font-family: "Inconsolata", monospace;
 
-    --color-background-menu: #031938;
-    --color-border-menu: 1px solid #910404;
-    --color-label-item-menu: #c73131;
-    --font-size-label-item-menu: 1rem;
+  --color-background: #c4c4c4;
+  --color-header: #2a323d;
 
-    --owerflow-menu: auto;
-    --width-menu: 250px;
-    --heigth-menu: 80vh;
-    --margin-menu: 15px;
-    --pading-menu: 5px;
-    --ul-margin-menu: 20px;
-    --ul-padding-right-menu: 80px;
-    --li-item-menu-active-font-size: 1.2rem;
-    --li-item-menu-active-font-color: #fff;
-    --li-item-menu-activr-text-shadow: 0.1em 0.1em 0.5em #a53333;
+  --color-background-menu: #031938;
+  --color-border-menu: 1px solid #910404;
+  --color-label-item-menu: #c73131;
+  --font-size-label-item-menu: 1rem;
 
-    --width-header: 300px;
-    --font-family-logo: "Caveat", cursive;
-    --heigth-header: 50px;
-    --padding-header: 10px;
-    --color-text-logo: #ffffff;
-    --font-text-sizi-logo: 2.2rem;
-    --border-bottom-header: 1px solid #e6dfdf;
-    --text-shadow-logo-header: 0.1rem 0.1rem 0.9rem #ffffff;
-    --font-weight-logo-header: 900;
-    --webkit-text-stroke-width-logo-header: 0.06rem;
-    --webkit-text-stroke-color-logo-header: #000000;
+  --owerflow-menu: auto;
+  --width-menu: 250px;
+  --heigth-menu: 80vh;
+  --margin-menu: 15px;
+  --pading-menu: 5px;
+  --ul-margin-menu: 20px;
+  --ul-padding-right-menu: 80px;
+  --li-item-menu-active-font-size: 1.2rem;
+  --li-item-menu-active-font-color: #fff;
+  --li-item-menu-activr-text-shadow: 0.1em 0.1em 0.5em #a53333;
 
-    --margin-left-bottom-hide-menu: 10px;
-    --font-size-bottom-hide-menu:  1.5rem;
-    --color-bottom-hide-menu: #ffffff;
-    --background-color-hide-menu: #bdb8b1;
-    --border-radius-hide-menu: 10px;
+  --width-header: 300px;
+  --font-family-logo: "Caveat", cursive;
+  --heigth-header: 50px;
+  --padding-header: 10px;
+  --color-text-logo: #ffffff;
+  --font-text-sizi-logo: 2.2rem;
+  --border-bottom-header: 1px solid #e6dfdf;
+  --text-shadow-logo-header: 0.1rem 0.1rem 0.9rem #ffffff;
+  --font-weight-logo-header: 900;
+  --webkit-text-stroke-width-logo-header: 0.06rem;
+  --webkit-text-stroke-color-logo-header: #000000;
 
-    --font-size-header-bottom-menu: 1.8rem;
-    --font-color-header-bottom-menu: #ffffff;
-    --padding-header-bottom-menu: 10px;
+  --margin-left-bottom-hide-menu: 10px;
+  --font-size-bottom-hide-menu: 1.5rem;
+  --color-bottom-hide-menu: #ffffff;
+  --background-color-hide-menu: #bdb8b1;
+  --border-radius-hide-menu: 10px;
 
-    --box-shadow: 5px 5px 5px rgb(88, 87, 87);
+  --font-size-header-bottom-menu: 1.8rem;
+  --font-color-header-bottom-menu: #ffffff;
+  --padding-header-bottom-menu: 10px;
 
-    --maring-body-renderiza: 15px;
-    --width-body-renderiza: 100%;
-    --heigth-body-renderiza: 77vh;
-    --background-color-body-renderiza: #f5f3f3;
-    --border-radius-body-renderiza: 10px;
-    --pading-body-renderiza: 10px;
-    --overflow-x-body-renderiza: auto;
+  --box-shadow: 5px 5px 5px rgb(88, 87, 87);
 
-    --position-footer: fixed;
-    --bottom-footer: 0;
-    --margin-bottom-footer: 10px;
-    --align-text-footer: center;
-    --text-algn-footer: end;
-    --width-footer: 98vw;
+  --maring-body-renderiza: 15px;
+  --width-body-renderiza: 100%;
+  --heigth-body-renderiza: 77vh;
+  --background-color-body-renderiza: #f5f3f3;
+  --border-radius-body-renderiza: 10px;
+  --pading-body-renderiza: 10px;
+  --overflow-x-body-renderiza: auto;
+
+  --position-footer: fixed;
+  --bottom-footer: 0;
+  --margin-bottom-footer: 10px;
+  --align-text-footer: center;
+  --text-algn-footer: end;
+  --width-footer: 98vw;
 }
 
-a{
-    text-decoration: none;
+a {
+  text-decoration: none;
 }
 
-body{
-    margin: 0px;
-    font-family: var(--font-family);
-    background-color: var(--color-background);
+body {
+  margin: 0px;
+  font-family: var(--font-family);
+  background-color: var(--color-background);
 }
 
-.page{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 10px;
+.page {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .group {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
 }
