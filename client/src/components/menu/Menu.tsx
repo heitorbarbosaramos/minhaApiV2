@@ -10,12 +10,13 @@ import {
   BiBug,
 } from "react-icons/bi";
 import { MenuContext } from "../../context/menu/MenuContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
 import "./Menu.css";
 
 const Menu = () => {
   const { oculta } = useContext(MenuContext);
+  const location = useLocation();
 
   const items: MenuModel[] = [
     {
@@ -99,7 +100,7 @@ const Menu = () => {
     },
   ];
 
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState(location.pathname);
 
   return (
     <nav className={oculta ? "menu mostrar" : "menu ocultar"}>
@@ -110,6 +111,7 @@ const Menu = () => {
             (item, itemIndex) =>
               item.visible && (
                 <Link
+                  key={itemIndex}
                   to={item.to}
                   onClick={() => {
                     setActive(item.to);
