@@ -51,7 +51,7 @@ public class WhatsAppService {
 
     public SendMessageResponse sendMessage(String session, SendMessageRequest response){
         session = verifySession(session);
-        String codDDD = response.getChatId().substring(0, 2);
+        String codDDD = response.getChatId().replaceAll("[()\\- ]", "").substring(0, 2);
         String numero = response.getChatId().replaceAll("[()\\- ]", "").substring(2);
         int quantNumero = numero.length();
 

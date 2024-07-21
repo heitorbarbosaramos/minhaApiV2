@@ -31,7 +31,15 @@ public class UsuarioController {
     public ResponseEntity<?> usuarioCreateStep1(@RequestBody @Valid UsuarioCreateDTO usuario){
         log.info("REQUISICAO POST PARA CRIAR USUÁRIO STEP 1");
         service.createStep1(usuario);
-        return ResponseEntity.ok("Foi enviado um email para "+usuario.getEmail()+" para continuar o processo de cadastro");
+        String message = "";
+        switch (usuario.getMetodoAtivacao()){
+            case EMAIL :
+                message = "Foi enviado um email para "+usuario.getEmail()+" para continuar o processo de cadastro";
+                break;
+            case WHATSAPP:
+                message = "Foi enviado uma mensagem para "+usuario.getTelefone()+" para continuar o processo de cadastro";
+        }
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/create/step2/{timeStamp}/{codigoConfirmacao}/{confirmadoVia}")

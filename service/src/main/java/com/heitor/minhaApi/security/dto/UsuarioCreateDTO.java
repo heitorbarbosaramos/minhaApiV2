@@ -1,7 +1,9 @@
 package com.heitor.minhaApi.security.dto;
 
+import com.heitor.minhaApi.security.enums.ActivationMethod;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +22,6 @@ public class UsuarioCreateDTO {
     @NotEmpty(message = "Campo obrigatório")
     @Email(message = "Campo deve ser um email")
     private String email;
+    @NotNull(message = "Campo obrigatório")
+    private ActivationMethod metodoAtivacao;
 }

@@ -2,29 +2,26 @@ package com.heitor.minhaApi.service;
 
 import com.heitor.minhaApi.entity.Usuario;
 import com.heitor.minhaApi.enums.UsuarioStatus;
+import com.heitor.minhaApi.feign.SendMessageRequest;
 import com.heitor.minhaApi.repostirory.UsuarioRepository;
 import com.heitor.minhaApi.security.LoginService;
-import com.heitor.minhaApi.security.UsuarioLoginDTO;
 import com.heitor.minhaApi.security.dto.UsuarioCreateDTO;
-import com.heitor.minhaApi.security.feignClient.TokenAdminResponse;
 import com.heitor.minhaApi.security.feignClient.UserRepresentarioKeyCloak;
 import com.heitor.minhaApi.security.feignClient.UserResetSenha;
 import com.heitor.minhaApi.service.utils.CorpoEmail;
 import com.heitor.minhaApi.service.utils.DataHoraUtils;
 import com.heitor.minhaApi.service.utils.EmailSenderService;
 import com.heitor.minhaApi.service.utils.StringUtils;
-import jakarta.servlet.http.Cookie;
+import com.heitor.minhaApi.service.whatsapp.WhatsAppService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.*;
-import java.util.Arrays;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -37,6 +34,7 @@ public class UsuarioService {
     private final EnderecoService enderecoService;
     private final EmailSenderService emailService;
     private final LoginService loginService;
+    private final WhatsAppService whatsAppService;
 
     @Value("${bucket.front.url}")
     private String bucketFront;
@@ -44,6 +42,8 @@ public class UsuarioService {
     private String bucketFrontResetPassword;
     @Value("${cookies.name.token}")
     private String tokenName;
+    @Value("${api.whatsapp.session}")
+    private String sessionWhatApp;
 
     @Value("${timeout.create.new.user.minutes}")
     private Integer timeOutCreteUser;
@@ -86,8 +86,22 @@ public class UsuarioService {
         String corpoEmail = CorpoEmail.criarConta(usuario.getNome(),
                     usuario.getEmail(),
                     LocalDateTime.now().plusMinutes(timeOutCreteUser),
-                    usuario.getCodigoConfirmacao(), linkStep1);
-        emailService.enviaEmail(usuario.getEmail(), "Criação de Conta STEP 1", corpoEmail);
+                    usuario.getCodigoConfirmacao(), linkStep1, dto.getMetodoAtivacao());
+
+        switch (dto.getMetodoAtivacao()){
+            case EMAIL :
+                emailService.enviaEmail(usuario.getEmail(), "Criação de Conta STEP 1", corpoEmail);
+                break;
+            case WHATSAPP:
+                corpoEmail = corpoEmail.replaceAll("<br>", "\n");
+                SendMessageRequest request = new SendMessageRequest();
+                request.setChatId(usuario.getTelefone());
+                request.setContentType("string");
+                request.setContent(corpoEmail);
+                whatsAppService.sendMessage(sessionWhatApp, request);
+                break;
+        }
+
     }
 
     public void createStep2(String timeStamp, String codigoConfirmacao, String confirmadoVia, HttpServletRequest request, HttpServletResponse response) throws IOException {
