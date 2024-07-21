@@ -54,6 +54,9 @@ public class ResourcesExceptionsHandler {
         } else if (e.getMessage().contains("404") && e.getMessage().contains("identity-provider/instances")) {
             httpStatus = HttpStatus.NOT_FOUND;
             obj.setMensagem("Provider solicitado não existe");
+        } else if (e.getMessage().contains("422") && e.getMessage().contains("Session already exists for")) {
+            httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+            obj.setMensagem("A sessão solicitada já está ativa");
         } else{
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             obj.setMensagem(e.getMessage());
