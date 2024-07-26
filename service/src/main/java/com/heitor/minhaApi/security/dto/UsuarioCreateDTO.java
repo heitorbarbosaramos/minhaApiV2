@@ -17,7 +17,7 @@ public class UsuarioCreateDTO {
     @NotEmpty(message = "Campo obrigatório")
     private String sobreNome;
     @NotEmpty(message = "Campo obrigatório")
-    @Size(min = 14, max = 15, message = "O campo deve conter entre 14 e 15 caracteres")
+    @Size(min = 10, max = 11, message = "O campo deve conter entre 10 e 11 caracteres")
     private String telefone;
     @NotEmpty(message = "Campo obrigatório")
     @Email(message = "Campo deve ser um email")
